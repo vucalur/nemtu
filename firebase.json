@@ -1,0 +1,9 @@
+{
+  "firebase": "nemtu-vucalur",
+  "public": "dist",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
