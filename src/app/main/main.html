@@ -1,12 +1,6 @@
-<md-toolbar layout="row">
-  <md-button class="menu" hide-gt-sm ng-click="main.toggleList()" aria-label="Show Menu">
-    <md-icon>menu</md-icon>
-  </md-button>
+<nmt-navbar toggle-sidenav="main.toggleList()"></nmt-navbar>
 
-  <h3>Nemtu</h3>
-</md-toolbar>
-
-<div class="container" layout="row" flex>
+<div id="nmt" class="container" layout="row" flex>
   <md-sidenav
     ng-click="main.toggleList()"
     md-component-id="left"
@@ -22,7 +16,7 @@
     </md-list>
   </md-sidenav>
 
-  <md-content flex id="content">
+  <md-content flex>
     <h2>{{main.selected}}</h2>
   </md-content>
 </div>

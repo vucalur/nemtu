@@ -1,7 +1,7 @@
 export function routerConfig($stateProvider, $urlRouterProvider) {
   'ngInject';
   $stateProvider
-    .state('home', {
+    .state('main', {
       url: '/',
       templateUrl: 'app/main/main.html',
       controller: 'MainController',
