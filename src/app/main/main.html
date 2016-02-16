@@ -1,15 +1,15 @@
-<nmt-navbar toggle-sidenav="main.toggleList()"></nmt-navbar>
+<nmt-navbar toggle-sidenav="vm.toggleList()"></nmt-navbar>
 
 <div id="nmt" class="container" layout="row" flex>
   <md-sidenav
-    ng-click="main.toggleList()"
+    ng-click="vm.toggleList()"
     md-component-id="left"
     md-is-locked-open="$mdMedia('gt-sm')"
     class="md-whiteframe-4dp">
 
     <md-list>
       <md-list-item ng-repeat="item in ['One', 'Two', 'Three']">
-        <md-button ng-click="main.selectItem(item)" ng-class="{'selected' : item === main.selected }">
+        <md-button ng-click="vm.selectItem(item)" ng-class="{'selected' : item === vm.selected }">
           {{item}}
         </md-button>
       </md-list-item>
@@ -17,6 +17,6 @@
   </md-sidenav>
 
   <md-content flex>
-    <h2>{{main.selected}}</h2>
+    <h2>{{vm.selected}}</h2>
   </md-content>
 </div>

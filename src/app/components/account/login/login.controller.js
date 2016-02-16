@@ -4,7 +4,7 @@ export class LoginController {
 
     this.$log = $log;
     this.$state = $state;
-    this.authService = authService;
+    this._authService = authService;
     this._providers = [
       {icon: 'google-plus', text: 'Google plus', code: 'google'},
       {icon: 'github-circle', text: 'GitHub', code: 'github'},
@@ -18,7 +18,7 @@ export class LoginController {
   }
 
   login(providerCode) {
-    this.authService.login(providerCode).then((authData) => {
+    this._authService.login(providerCode).then((authData) => {
       this.$log.log("Logged in as:", authData.uid);
       this.$state.go('main');
     }).catch((error) => {
