@@ -1,0 +1,17 @@
+<nmt-navbar></nmt-navbar>
+
+<md-content flex>
+  <input ng-model="url" ng-init='url = "http://allegro.pl/rowery-i-akcesoria-rowery-16420"'>
+  <button ng-click="vm.fetch(url)">Fetch</button>
+  <md-list flex>
+    <md-subheader class="md-no-sticky">fetched articles:</md-subheader>
+    <md-list-item class="md-3-line" ng-repeat="article in vm.articles">
+      <img ng-src="{{article.img}}" class="md-avatar" alt="{{article.title}}"/>
+      <div class="md-list-item-text" layout="column">
+        <h3>{{ article.title }}</h3>
+        <h4>{{ article.price }}</h4>
+      </div>
+    </md-list-item>
+  </md-list>
+
+</md-content>

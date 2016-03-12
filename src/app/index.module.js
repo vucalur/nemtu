@@ -22,7 +22,8 @@ angular.module('nemtu', [
     'ngMdIcons',
 
     // nemtu
-    'nemtu.account'
+    'nemtu.account',
+    'nemtu.feed'
   ])
   .config(config)
   .config(routerConfig)
