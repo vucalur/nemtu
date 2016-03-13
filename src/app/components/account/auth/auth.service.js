@@ -2,21 +2,30 @@ export class AuthService {
   constructor($firebaseAuth, firebaseDataService) {
     'ngInject';
 
-    this._firebaseAuthObject = $firebaseAuth(firebaseDataService.root);
-    this.isLoggedIn = this._firebaseAuthObject.$getAuth;
-    this.logout = this._firebaseAuthObject.$unauth;
+    this._firebaseAuth = $firebaseAuth(firebaseDataService.root);
+    this.logout = this._firebaseAuth.$unauth;
+    this._watchAuthState();
+  }
+
+  _watchAuthState() {
+    this._firebaseAuth.$onAuth(authData =>
+      this.authData = authData
+    );
+  }
+
+  isLoggedIn() {
+    return this.authData;
   }
 
   get displayName() {
-    var auth = this._firebaseAuthObject.$getAuth();
-    if (!auth) {
+    if (!this.authData) {
       return null;
     }
-    return this._parseDisplayName(auth);
+    return this._parseDisplayName(this.authData);
   }
 
   login(providerCode) {
-    return this._firebaseAuthObject.$authWithOAuthPopup(providerCode);
+    return this._firebaseAuth.$authWithOAuthPopup(providerCode);
   }
 
   _parseDisplayName(authData) {
