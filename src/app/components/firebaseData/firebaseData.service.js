@@ -1,6 +1,9 @@
 export class FirebaseDataService {
-  constructor(FIREBASE_URL, Firebase){
+  constructor(FIREBASE_URL, Firebase) {
     'ngInject';
-    this.root = new Firebase(FIREBASE_URL);
+    var root = new Firebase(FIREBASE_URL);
+
+    this.root = root;
+    this.users = root.child('users');
   }
 }

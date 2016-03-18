@@ -1,10 +1,10 @@
 export class ArticlesService {
-  constructor($log, $http, parser) {
+  constructor($log, $http, parserService) {
     'ngInject';
 
     this.$log = $log;
     this.$http = $http;
-    this.parser = parser;
+    this.parser = parserService;
   }
 
   _fetch(allegroUrl) {

@@ -1,0 +1,87 @@
+<md-dialog id="createEngine" aria-label="Edit search engine properties" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Enter search engine properties</h2>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-input-container class="md-block">
+          <label>Name</label>
+          <input ng-model="vm.engine.name">
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Article selector</label>
+          <input ng-model="vm.engine.articleSel">
+        </md-input-container>
+        <fieldset>
+          <legend>Article data selectors</legend>
+          <p>Use selectors relative to article selector specified above</p>
+          <md-input-container class="md-block">
+            <label>title</label>
+            <input ng-model="vm.engine.article.titleSel">
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>link</label>
+            <input ng-model="vm.engine.article.linkSel">
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>image</label>
+            <input ng-model="vm.engine.article.imageSel">
+          </md-input-container>
+        </fieldset>
+        <md-switch ng-model="vm.engine.pagination.active" aria-label="Can search results come in pages ?">
+          Can search results come in pages ?
+        </md-switch>
+        <fieldset ng-show="vm.engine.pagination.active">
+          <legend>Pagination support</legend>
+
+          <md-radio-group ng-model="vm.engine.pagination.type">
+            <md-radio-button value="query">pagination by URL query param<br/>
+              <span class="desc">
+                TODO(vucalur): Brief explaination.<br/>
+                Crawler will stop when next returned page doesn't contain any articles.
+              </span>
+            </md-radio-button>
+            <md-radio-button value="linkToNext">pagination by link to next page<br/>
+              <span class="desc">
+                TODO(vucalur): Brief explaination.<br/>
+                Crawler will stop when next returned page doesn't contain such link.
+              </span>
+            </md-radio-button>
+          </md-radio-group>
+          <div layout-gt-sm="row" ng-show="vm.engine.pagination.type == 'query' ">
+            <md-input-container class="md-block">
+              <label>url query param</label>
+              <input ng-model="vm.engine.pagination.query.param">
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>start value</label>
+              <input type="number" ng-model="vm.engine.pagination.query.start">
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>increment</label>
+              <input type="number" ng-model="vm.engine.pagination.query.inc">
+            </md-input-container>
+          </div>
+          <div ng-show="vm.engine.pagination.type == 'linkToNext' ">
+            <md-input-container class="md-block">
+              <label>next page link selector</label>
+              <input ng-model="vm.engine.pagination.linkToNext.sel">
+            </md-input-container>
+          </div>
+        </fieldset>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised" ng-click="vm.cancel()">
+        Cancel
+      </md-button>
+      <md-button class="md-primary md-raised" ng-click="vm.create()" style="margin-right:20px;">
+        Save
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

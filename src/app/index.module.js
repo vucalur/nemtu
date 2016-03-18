@@ -5,8 +5,8 @@ import { routerConfig } from './index.route';
 import { runBlock } from './index.run';
 import { consts } from './index.consts';
 import { MainController } from './main/main.controller';
-import { NavbarDirective } from '../app/components/navbar/navbar.directive';
-import { FirebaseDataService } from '../app/components/firebaseData/firebaseData.service';
+import { NavbarDirective } from './components/navbar/navbar.directive';
+import { FirebaseDataService } from './components/firebaseData/firebaseData.service';
 
 angular.module('nemtu', [
     // angular

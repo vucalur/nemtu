@@ -1,7 +1,7 @@
 export class ArticlesController {
-  constructor(articles) {
+  constructor(articlesService) {
     'ngInject';
-    this.articlesService = articles;
+    this.articlesService = articlesService;
     this.articles = [];
   }
 

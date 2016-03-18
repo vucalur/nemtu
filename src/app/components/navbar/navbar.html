@@ -1,4 +1,5 @@
 <md-toolbar>
+  <!--TODO(vucalur): postpone rendering till vm.isLoggedIn is available (currently both states visible at first) -->
   <div class="md-toolbar-tools">
     <md-button class="md-icon-button" aria-label="Show Menu"
                hide-gt-sm ng-show="vm.toggleSidenav"
@@ -7,6 +8,11 @@
     </md-button>
 
     <h2><span>Nemtu</span></h2>
+    <md-button class="md-secondary" aria-label="Engines"
+               ng-show="vm.isLoggedIn"
+               ui-sref="engines">
+      Engines
+    </md-button>
 
     <span flex></span>
     <md-button class="md-raised md-primary" aria-label="Log in"
