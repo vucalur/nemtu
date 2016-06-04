@@ -15,7 +15,7 @@ export class ListController {
       controller: CreateController,
       controllerAs: 'vm',
       locals: {engineToUpdate: selectedEngine},
-      templateUrl: 'app/components/feed/engine/create.html',
+      templateUrl: 'app/components/engines/create.html',
       parent: angular.element(this.$document.body),
       targetEvent: ev,
       clickOutsideToClose: false,
