@@ -1,6 +1,7 @@
-import {CreateController} from './create.controller.js';
+import angular from 'angular';
+import CreateController from './create.controller.js';
 
-export class ListController {
+export default class ListController {
   constructor($document, $mdDialog, enginesService, user) {
     'ngInject';
 
@@ -11,7 +12,7 @@ export class ListController {
   }
 
   addOrEdit(ev, selectedEngine) {
-    var dialogProps = {
+    const dialogProps = {
       controller: CreateController,
       controllerAs: 'vm',
       locals: {engineToUpdate: selectedEngine},
@@ -33,7 +34,7 @@ export class ListController {
   }
 
   remove(ev, selectedEngine) {
-    var confirm = this.$mdDialog.confirm()
+    const confirm = this.$mdDialog.confirm()
       .title(`Would you like to remove "${selectedEngine.name}" engine?`)
       .textContent('After removal no new data will be collected by feeds that have been using this engine')
       .ariaLabel('Engine removal')
@@ -46,5 +47,3 @@ export class ListController {
     });
   }
 }
-
-

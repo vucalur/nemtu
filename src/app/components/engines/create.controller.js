@@ -1,4 +1,4 @@
-export class CreateController {
+export default class CreateController {
   constructor($mdDialog, engineToUpdate) {
     'ngInject';
 
@@ -7,7 +7,7 @@ export class CreateController {
   }
 
   _defaultEngine() {
-    var engine = {
+    const engine = {
       pagination: {
         active: false
       }
@@ -20,12 +20,11 @@ export class CreateController {
   }
 
   create() {
-    var engine = this._removeUnusedFields(this.engine);
+    const engine = this._removeUnusedFields(this.engine);
     this.$mdDialog.hide(engine);
   }
 
   _removeUnusedFields(engine) {
-    // pagination
     if (engine.pagination.active) {
       switch (engine.pagination.type) {
         case 'query':
@@ -34,6 +33,7 @@ export class CreateController {
         case 'linkToNext':
           delete engine.pagination.query;
           break;
+        // no default
       }
     } else {
       delete engine.pagination.type;

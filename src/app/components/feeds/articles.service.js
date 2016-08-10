@@ -1,4 +1,6 @@
-export class ArticlesService {
+import angular from 'angular';
+
+export default class ArticlesService {
   constructor($log, $http, parserService) {
     'ngInject';
 
@@ -8,11 +10,11 @@ export class ArticlesService {
   }
 
   _fetch(allegroUrl) {
-    var req = {
+    const req = {
       method: 'GET',
       url: 'nemtuRelay',
       headers: {
-        'nemtuUrl': allegroUrl
+        nemtuUrl: allegroUrl
       }
     };
 
@@ -22,7 +24,7 @@ export class ArticlesService {
         return response.data;
       })
       .catch(error => {
-        this.$log.error(`NemtuRelay failed for ${allegroUrl}.\n` + angular.toJson(error.data, true));
+        this.$log.error(`NemtuRelay failed for ${allegroUrl}.\n${angular.toJson(error.data, true)}`);
       });
   }
 

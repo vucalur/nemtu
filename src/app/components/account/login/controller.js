@@ -1,4 +1,4 @@
-export class LoginController {
+export default class LoginController {
   constructor($log, $state, authService) {
     'ngInject';
 
@@ -18,10 +18,10 @@ export class LoginController {
   }
 
   login(providerCode) {
-    this._authService.login(providerCode).then((authData) => {
+    this._authService.login(providerCode).then(authData => {
       this.$log.log("Logged in as:", authData.uid);
       this.$state.go('main');
-    }).catch((error) => {
+    }).catch(error => {
       this.$log.error("Authentication failed:", error);
     });
   }

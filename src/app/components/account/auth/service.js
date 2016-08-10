@@ -8,9 +8,9 @@ export class AuthService {
   }
 
   _watchAuthState() {
-    this._firebaseAuth.$onAuth(authData =>
-      this.authData = authData
-    );
+    this._firebaseAuth.$onAuth(authData => {
+      this.authData = authData;
+    });
   }
 
   isLoggedIn() {
@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   _parseDisplayName(authData) {
-    var provider = authData.provider;
+    const provider = authData.provider;
     return authData[provider].displayName;
   }
 }

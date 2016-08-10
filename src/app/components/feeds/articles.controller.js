@@ -1,4 +1,4 @@
-export class ArticlesController {
+export default class ArticlesController {
   constructor(articlesService) {
     'ngInject';
     this.articlesService = articlesService;
@@ -7,8 +7,8 @@ export class ArticlesController {
 
   fetch(url) {
     this.articlesService.parsed(url)
-      .then(articles =>
-        this.articles = articles
-      );
+      .then(articles => {
+        this.articles = articles;
+      });
   }
 }

@@ -1,4 +1,4 @@
-export class ChannelsController {
+export default class ChannelsController {
   constructor($mdSidenav) {
     'ngInject';
 

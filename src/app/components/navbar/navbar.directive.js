@@ -1,21 +1,3 @@
-export function NavbarDirective() {
-  'ngInject';
-
-  let directive = {
-    restrict: 'E',
-    templateUrl: 'app/components/navbar/navbar.html',
-    scope: {
-      'toggleSidenav': '&?'
-    },
-    controller: NavbarController,
-    controllerAs: 'vm',
-    bindToController: true
-  };
-
-  return directive;
-}
-
-
 class NavbarController {
   constructor($state, authService) {
     'ngInject';
@@ -35,4 +17,21 @@ class NavbarController {
   get isLoggedIn() {
     return this._authService.isLoggedIn();
   }
+}
+
+export default function NavbarDirective() {
+  'ngInject';
+
+  const directive = {
+    restrict: 'E',
+    templateUrl: 'app/components/navbar/navbar.html',
+    scope: {
+      toggleSidenav: '&?'
+    },
+    controller: NavbarController,
+    controllerAs: 'vm',
+    bindToController: true
+  };
+
+  return directive;
 }
