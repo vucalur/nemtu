@@ -11,7 +11,6 @@ import ngMaterial from 'angular-material';
 
 import {config} from './config';
 import {routesConfig, authRequiredRedirect} from './routes';
-import {FIREBASE_URL} from './consts';
 import NavbarDirective from './app/components/navbar/navbar.directive';
 import FirebaseDataService from './app/components/firebaseData/firebaseData.service';
 
@@ -46,7 +45,6 @@ angular.module('nemtu', [
   .config(config)
   .config(routesConfig)
   .run(authRequiredRedirect)
-  .constant('FIREBASE_URL', FIREBASE_URL)
   .directive('nmtNavbar', NavbarDirective)
   .service('firebaseDataService', FirebaseDataService)
 ;

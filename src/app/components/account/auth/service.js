@@ -1,35 +1,32 @@
 export class AuthService {
-  constructor($firebaseAuth, firebaseDataService) {
+  constructor($firebaseAuth) {
     'ngInject';
 
-    this._firebaseAuth = $firebaseAuth(firebaseDataService.root);
-    this.logout = this._firebaseAuth.$unauth;
+    this._auth = $firebaseAuth();
+    this.logout = this._auth.$signOut;
+    this.requireSignIn = this._auth.$requireSignIn;
     this._watchAuthState();
   }
 
+  // TODO(vucalur): measure perf. benefit and use this._auth.getAuth() if marginal
   _watchAuthState() {
-    this._firebaseAuth.$onAuth(authData => {
-      this.authData = authData;
+    this._auth.$onAuthStateChanged(user => {
+      this._user = user;
     });
   }
 
   isLoggedIn() {
-    return this.authData;
+    return this._user;
   }
 
   get displayName() {
-    if (!this.authData) {
+    if (!this._user) {
       return null;
     }
-    return this._parseDisplayName(this.authData);
+    return this._user.displayName;
   }
 
   login(providerCode) {
-    return this._firebaseAuth.$authWithOAuthPopup(providerCode);
-  }
-
-  _parseDisplayName(authData) {
-    const provider = authData.provider;
-    return authData[provider].displayName;
+    return this._auth.$signInWithPopup(providerCode);
   }
 }

@@ -19,7 +19,7 @@ export default class LoginController {
 
   login(providerCode) {
     this._authService.login(providerCode).then(authData => {
-      this.$log.log("Logged in as:", authData.uid);
+      this.$log.log("Logged in as:", authData.user.uid);
       this.$state.go('main');
     }).catch(error => {
       this.$log.error("Authentication failed:", error);
