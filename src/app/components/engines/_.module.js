@@ -3,9 +3,9 @@ import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
 import firebase from 'angularfire';
 
-import {routerConfig} from './_.route.js';
-import ListController from './list.controller.js';
-import EnginesService from './engines.serivce.js';
+import {routerConfig} from './_.route';
+import ListController from './list.controller';
+import EnginesService from './engines.serivce';
 
 import './style.scss';
 

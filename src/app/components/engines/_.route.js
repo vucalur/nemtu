@@ -1,4 +1,4 @@
-import {requireAuth} from '../account/auth/routingResolvers.js';
+import {requireAuth} from '../account/auth/routingResolvers';
 
 export function routerConfig($stateProvider) {
   'ngInject';

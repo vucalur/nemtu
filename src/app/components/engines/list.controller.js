@@ -1,5 +1,5 @@
 import angular from 'angular';
-import CreateController from './create.controller.js';
+import CreateController from './create.controller';
 
 export default class ListController {
   constructor($document, $mdDialog, enginesService, user) {
