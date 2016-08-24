@@ -1,0 +1,38 @@
+<md-dialog id="createChannel" aria-label="Create channel" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Enter channel properties</h2>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-input-container class="md-block">
+          <label>Name</label>
+          <input ng-model="vm.channel.name">
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>URL to fetch content from</label>
+          <input ng-model="vm.channel.url">
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Crawling engine to be used</label>
+          <md-select ng-model="vm.channel.engine_id">
+            <md-option ng-repeat="engine in vm.engines" value="{{engine.$id}}">
+              {{engine.name}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised" ng-click="vm.cancel()">
+        Cancel
+      </md-button>
+      <md-button class="md-primary md-raised" ng-click="vm.create()" style="margin-right:20px;">
+        Save
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -8,11 +8,16 @@
     </md-button>
 
     <h2><span>Nemtu</span></h2>
-    <md-button class="md-secondary" aria-label="Engines"
-               ng-show="vm.isLoggedIn"
-               ui-sref="engines">
-      Engines
-    </md-button>
+    <span ng-show="vm.isLoggedIn">
+      <md-button class="md-secondary" aria-label="Engines"
+                 ui-sref="engines">
+        Engines
+      </md-button>
+      <md-button class="md-secondary" aria-label="Channels"
+                 ui-sref="main">
+        Channels
+      </md-button>
+    </span>
 
     <span flex></span>
     <md-button class="md-raised md-primary" aria-label="Log in"

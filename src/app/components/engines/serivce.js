@@ -9,7 +9,7 @@ export default class EnginesService {
 
   getEnginesByUser(uid) {
     if (!this.engines) {
-      const enginesRef = this.firebaseDS.users.child(uid).child('engines');
+      const enginesRef = this.firebaseDS.uEngines.child(uid);
       this.engines = this.$firebaseArray(enginesRef);
     }
     return this.engines;

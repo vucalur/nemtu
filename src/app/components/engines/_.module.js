@@ -5,7 +5,7 @@ import firebase from 'angularfire';
 
 import {routerConfig} from './_.route';
 import ListController from './list.controller';
-import EnginesService from './engines.serivce';
+import EnginesService from './serivce';
 
 import './style.scss';
 

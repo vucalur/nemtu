@@ -16,7 +16,7 @@ import FirebaseDataService from './app/components/firebaseData/firebaseData.serv
 
 import AccountModule from './app/components/account/_.module';
 import EnginesModule from './app/components/engines/_.module';
-import FeedsModule from './app/components/feeds/_.module';
+import ChannelsModule from './app/components/channels/_.module';
 
 // Material design css
 import 'angular-material/angular-material.css';
@@ -40,7 +40,7 @@ angular.module('nemtu', [
   // nemtu
   AccountModule.name,
   EnginesModule.name,
-  FeedsModule.name
+  ChannelsModule.name
 ])
   .config(config)
   .config(routesConfig)

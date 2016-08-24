@@ -7,11 +7,18 @@ export default class ListController {
 
     this.$document = $document;
     this.$mdDialog = $mdDialog;
-    this.engineService = enginesService;
-    this.engines = this.engineService.getEnginesByUser(user.uid);
+    this.engines = enginesService.getEnginesByUser(user.uid);
   }
 
-  addOrEdit(ev, selectedEngine) {
+  add(ev) {
+    this._addOrEdit(ev);
+  }
+
+  edit(ev, selectedEngine) {
+    this._addOrEdit(ev, selectedEngine);
+  }
+
+  _addOrEdit(ev, selectedEngine) {
     const dialogProps = {
       controller: CreateController,
       controllerAs: 'vm',
@@ -36,7 +43,7 @@ export default class ListController {
   remove(ev, selectedEngine) {
     const confirm = this.$mdDialog.confirm()
       .title(`Would you like to remove "${selectedEngine.name}" engine?`)
-      .textContent('After removal no new data will be collected by feeds that have been using this engine')
+      .textContent('After removal no new data will be collected by channels that have been using this engine')
       .ariaLabel('Engine removal')
       .targetEvent(ev)
       .ok('Yes, Remove')

@@ -4,6 +4,7 @@ export default class FirebaseDataService {
   constructor() {
     'ngInject';
     this.root = firebase.database().ref();
-    this.users = this.root.child('users');
+    this.uEngines = this.root.child('user-engines');
+    this.uChannels = this.root.child('user-channels');
   }
 }

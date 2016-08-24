@@ -13,7 +13,7 @@
     <md-list-item ng-repeat="engine in vm.engines" layout="row" ng-mouseenter="showActions = true" ng-mouseleave="showActions = false">
       <h3>{{ engine.name }}</h3>
       <div ng-show="showActions">
-        <md-button class="md-raised md-fab md-mini" ng-click="vm.addOrEdit($event, engine)">
+        <md-button class="md-raised md-fab md-mini" ng-click="vm.edit($event, engine)">
           <md-tooltip>Edit</md-tooltip>
           <!--TODO(vucalur): find alternative to angular-material-icons-->
           <ng-md-icon icon="mode_edit"/>
@@ -26,7 +26,7 @@
       </div>
     </md-list-item>
   </md-list>
-  <md-button class="md-raised md-primary" ng-click="vm.addOrEdit($event)">
+  <md-button class="md-raised md-primary" ng-click="vm.add($event)">
     Add new
   </md-button>
 </md-content>

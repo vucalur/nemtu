@@ -1,0 +1,16 @@
+#nmt {
+  md-content {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 5px;
+  }
+
+  md-list-item {
+    &.selected {
+      background-color: lightgrey;
+    }
+    > button {
+      text-align: left !important;
+    }
+  }
+}
