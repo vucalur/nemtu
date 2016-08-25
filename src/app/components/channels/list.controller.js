@@ -22,39 +22,40 @@ export default class ChannelsController {
   }
 
   add(ev) {
-    this._addOrEdit(ev);
+    this._showDialog(ev)
+      .then(newChannel => {
+        this.channels.$add(newChannel);
+      });
   }
 
-  edit(ev, selectedChannel) {
-    this._addOrEdit(ev, selectedChannel);
+  edit(ev, channelToEdit) {
+    this._showDialog(ev, channelToEdit)
+      .then(edited => {
+        this.channels.$save(edited);
+      });
   }
 
-  _addOrEdit(ev, selectedChannel) {
+  _showDialog(ev, channelToEdit) {
     const dialogProps = {
       controller: CreateController,
       controllerAs: 'vm',
       locals: {
-        channelToUpdate: selectedChannel,
-        uid: this.uid
+        channelToEdit,
+        uid: this.uid // TODO(vucalur): eliminate crazy uid passing. DI anyone ?
       },
       templateUrl: 'app/components/channels/create.html',
       parent: angular.element(this.$document.body),
       targetEvent: ev,
       escapeToClose: true
     };
-    this.$mdDialog.show(dialogProps)
-      .then(channel => {
-        if (selectedChannel) {
-          this.channels.$save(channel);
-        } else {
-          this.channels.$add(channel);
-        }
-      });
+
+    const channelPromise = this.$mdDialog.show(dialogProps);
+    return channelPromise;
   }
 
-  remove(ev, selectedChannel) {
+  remove(ev, channelToRemove) {
     const confirm = this.$mdDialog.confirm()
-      .title(`Would you like to remove "${selectedChannel.name}" channel?`)
+      .title(`Would you like to remove "${channelToRemove.name}" channel?`)
       .textContent('Removing the channel will also remove its all posts')
       .ariaLabel('Channel removal')
       .targetEvent(ev)
@@ -62,7 +63,7 @@ export default class ChannelsController {
       .cancel('Cancel');
 
     this.$mdDialog.show(confirm).then(() => {
-      this.channels.$remove(selectedChannel);
+      this.channels.$remove(channelToRemove);
     });
   }
 }

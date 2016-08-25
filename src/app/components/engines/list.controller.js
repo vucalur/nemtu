@@ -11,18 +11,24 @@ export default class ListController {
   }
 
   add(ev) {
-    this._addOrEdit(ev);
+    this._engineDialog(ev)
+      .then(newEngine => {
+        this.engines.$add(newEngine);
+      });
   }
 
-  edit(ev, selectedEngine) {
-    this._addOrEdit(ev, selectedEngine);
+  edit(ev, engineToEdit) {
+    this._engineDialog(ev, engineToEdit)
+      .then(edited => {
+        this.engines.$save(edited);
+      });
   }
 
-  _addOrEdit(ev, selectedEngine) {
+  _engineDialog(ev, engineToEdit) {
     const dialogProps = {
       controller: CreateController,
       controllerAs: 'vm',
-      locals: {engineToUpdate: selectedEngine},
+      locals: {engineToEdit},
       templateUrl: 'app/components/engines/create.html',
       parent: angular.element(this.$document.body),
       targetEvent: ev,
@@ -30,19 +36,13 @@ export default class ListController {
       escapeToClose: false,
       fullscreen: true
     };
-    this.$mdDialog.show(dialogProps)
-      .then(engine => {
-        if (selectedEngine) {
-          this.engines.$save(engine);
-        } else {
-          this.engines.$add(engine);
-        }
-      });
+    const enginePromise = this.$mdDialog.show(dialogProps);
+    return enginePromise;
   }
 
-  remove(ev, selectedEngine) {
+  remove(ev, engineToRemove) {
     const confirm = this.$mdDialog.confirm()
-      .title(`Would you like to remove "${selectedEngine.name}" engine?`)
+      .title(`Would you like to remove "${engineToRemove.name}" engine?`)
       .textContent('After removal no new data will be collected by channels that have been using this engine')
       .ariaLabel('Engine removal')
       .targetEvent(ev)
@@ -50,7 +50,7 @@ export default class ListController {
       .cancel('Cancel');
 
     this.$mdDialog.show(confirm).then(() => {
-      this.engines.$remove(selectedEngine);
+      this.engines.$remove(engineToRemove);
     });
   }
 }

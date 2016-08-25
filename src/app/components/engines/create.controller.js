@@ -1,9 +1,16 @@
+import angular from "angular";
+
 export default class CreateController {
-  constructor($mdDialog, engineToUpdate) {
+  constructor($mdDialog, engineToEdit) {
     'ngInject';
 
     this.$mdDialog = $mdDialog;
-    this.engine = engineToUpdate ? engineToUpdate : this._defaultEngine();
+    this.engine = this._createWorkingDraft(engineToEdit);
+    this._originalEngine = engineToEdit;
+  }
+
+  _createWorkingDraft(engineToEdit) {
+    return (engineToEdit ? angular.copy(engineToEdit) : this._defaultEngine());
   }
 
   _defaultEngine() {
@@ -19,28 +26,38 @@ export default class CreateController {
     this.$mdDialog.cancel();
   }
 
-  create() {
-    const engine = this._removeUnusedFields(this.engine);
-    this.$mdDialog.hide(engine);
+  save() {
+    if (this._originalEngine) {
+      // unable to hide() with this.engine, since angular.copy() has omitted important fields
+      this._applyEditsOnOriginal();
+      this._sanitizeForm(this._originalEngine); // must happen after applying edits - pagination might have been edited
+      this.$mdDialog.hide(this._originalEngine);
+    } else {
+      this._sanitizeForm(this.engine);
+      this.$mdDialog.hide(this.engine);
+    }
   }
 
-  _removeUnusedFields(engine) {
-    if (engine.pagination.active) {
-      switch (engine.pagination.type) {
+  _applyEditsOnOriginal() {
+    angular.extend(this._originalEngine, this.engine);
+  }
+
+  _sanitizeForm(engine) {
+    const pagination = engine.pagination;
+    if (pagination.active) {
+      switch (pagination.type) {
         case 'query':
-          delete engine.pagination.linkToNext;
+          delete pagination.linkToNext;
           break;
         case 'linkToNext':
-          delete engine.pagination.query;
+          delete pagination.query;
           break;
         // no default
       }
     } else {
-      delete engine.pagination.type;
-      delete engine.pagination.linkToNext;
-      delete engine.pagination.query;
+      delete pagination.type;
+      delete pagination.linkToNext;
+      delete pagination.query;
     }
-
-    return engine;
   }
 }
