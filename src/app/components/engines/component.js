@@ -1,13 +1,13 @@
 import angular from 'angular';
 import CreateController from './create.controller';
 
-export default class ListController {
-  constructor($document, $mdDialog, enginesService, user) {
+class ListController {
+  constructor($document, $mdDialog, enginesService) {
     'ngInject';
 
     this.$document = $document;
     this.$mdDialog = $mdDialog;
-    this.engines = enginesService.getEnginesByUser(user.uid);
+    this.engines = enginesService.getEnginesByUser(this.user.uid);
   }
 
   add(ev) {
@@ -54,3 +54,12 @@ export default class ListController {
     });
   }
 }
+
+export default {
+  templateUrl: 'app/components/engines/list.html',
+  controller: ListController,
+  controllerAs: 'vm',
+  bindings: {
+    user: '<'
+  }
+};

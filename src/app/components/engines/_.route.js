@@ -3,11 +3,10 @@ import {requireAuth} from '../account/auth/routingResolvers';
 export function routerConfig($stateProvider) {
   'ngInject';
   $stateProvider
-    .state('engines', {
+    .state({
+      name: 'engines',
       url: '/engines',
-      templateUrl: 'app/components/engines/list.html',
-      controller: 'ListController',
-      controllerAs: 'vm',
+      component: 'engines',
       resolve: {user: requireAuth}
     });
 }

@@ -19,19 +19,11 @@ class NavbarController {
   }
 }
 
-export default function NavbarDirective() {
-  'ngInject';
-
-  const directive = {
-    restrict: 'E',
-    templateUrl: 'app/components/navbar/navbar.html',
-    scope: {
-      toggleSidenav: '&?'
-    },
-    controller: NavbarController,
-    controllerAs: 'vm',
-    bindToController: true
-  };
-
-  return directive;
-}
+export default {
+  templateUrl: 'app/components/navbar/navbar.html',
+  controller: NavbarController,
+  controllerAs: 'vm',
+  bindings: {
+    toggleSidenav: '&?'
+  }
+};

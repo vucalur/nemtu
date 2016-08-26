@@ -4,7 +4,7 @@ import ngMaterial from 'angular-material';
 import firebase from 'angularfire';
 
 import {routerConfig} from './_.route';
-import ListController from './list.controller';
+import engines from './component';
 import EnginesService from './serivce';
 
 import './style.scss';
@@ -17,6 +17,6 @@ export default angular.module('nemtu.engines', [
   // 'ngMdIcons'
 ])
   .config(routerConfig)
-  .controller('ListController', ListController)
+  .component('engines', engines)
   .service('enginesService', EnginesService)
 ;

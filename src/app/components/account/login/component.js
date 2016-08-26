@@ -1,4 +1,4 @@
-export default class LoginController {
+class LoginController {
   constructor($log, $state, authService) {
     'ngInject';
 
@@ -26,3 +26,9 @@ export default class LoginController {
     });
   }
 }
+
+export default {
+  templateUrl: 'app/components/account/login/login.html',
+  controller: LoginController,
+  controllerAs: 'vm'
+};

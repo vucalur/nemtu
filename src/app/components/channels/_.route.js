@@ -3,17 +3,15 @@ import {requireAuth} from '../account/auth/routingResolvers';
 export function routerConfig($stateProvider) {
   'ngInject';
   $stateProvider
-    .state('main', {
+    .state({
+      name: 'main',
       url: '/',
-      templateUrl: 'app/components/channels/list.html',
-      controller: 'ChannelsController',
-      controllerAs: 'vm',
+      component: 'channels',
       resolve: {user: requireAuth}
     })
-    .state('articles', {
+    .state({
+      name: 'articles',
       url: '/articles',
-      templateUrl: 'app/components/channels/articles.html',
-      controller: 'ArticlesController',
-      controllerAs: 'vm'
+      component: 'articles'
     });
 }

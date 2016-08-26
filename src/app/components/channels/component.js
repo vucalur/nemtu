@@ -1,16 +1,15 @@
 import angular from 'angular';
 import CreateController from "./create.controller";
 
-export default class ChannelsController {
-  constructor($document, $mdSidenav, $mdDialog, channelsService, user) {
+class ChannelsController {
+  constructor($document, $mdSidenav, $mdDialog, channelsService) {
     'ngInject';
 
     this.$document = $document;
     this.$mdSidenav = $mdSidenav;
     this.$mdDialog = $mdDialog;
     this.selected = null;
-    this.channels = channelsService.getChannelsByUser(user.uid);
-    this.uid = user.uid;
+    this.channels = channelsService.getChannelsByUser(this.user.uid);
   }
 
   toggleList() {
@@ -41,7 +40,7 @@ export default class ChannelsController {
       controllerAs: 'vm',
       locals: {
         channelToEdit,
-        uid: this.uid // TODO(vucalur): eliminate crazy uid passing. DI anyone ?
+        uid: this.user.uid // TODO(vucalur): eliminate crazy uid passing. DI anyone ?
       },
       templateUrl: 'app/components/channels/create.html',
       parent: angular.element(this.$document.body),
@@ -67,3 +66,12 @@ export default class ChannelsController {
     });
   }
 }
+
+export default {
+  templateUrl: 'app/components/channels/list.html',
+  controller: ChannelsController,
+  controllerAs: 'vm',
+  bindings: {
+    user: '<'
+  }
+};

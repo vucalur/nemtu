@@ -4,13 +4,13 @@ import firebase from 'angularfire';
 
 import {routerConfig} from './_.route';
 import {AuthService} from './auth/service';
-import LoginController from './login/controller';
+import login from './login/component';
 
 export default angular.module('nemtu.account', [
   uiRouter,
   firebase
 ])
   .config(routerConfig)
-  .controller('LoginController', LoginController)
+  .component('login', login)
   .service('authService', AuthService)
 ;

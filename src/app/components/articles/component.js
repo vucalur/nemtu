@@ -1,4 +1,4 @@
-export default class ArticlesController {
+class ArticlesController {
   constructor(articlesService) {
     'ngInject';
     this.articlesService = articlesService;
@@ -12,3 +12,9 @@ export default class ArticlesController {
       });
   }
 }
+
+export default {
+  templateUrl: 'app/components/articles/articles.html',
+  controller: ArticlesController,
+  controllerAs: 'vm'
+};
