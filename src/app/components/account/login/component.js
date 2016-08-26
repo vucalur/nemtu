@@ -20,7 +20,7 @@ class LoginController {
   login(providerCode) {
     this.AuthService.login(providerCode).then(authData => {
       this.$log.log("Logged in as:", authData.user.uid);
-      this.$state.go('main');
+      this.$state.go('channels');
     }).catch(error => {
       this.$log.error("Authentication failed:", error);
     });

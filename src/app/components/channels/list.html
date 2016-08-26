@@ -2,7 +2,6 @@
 
 <div id="nmt" class="container" layout="row" flex>
   <md-sidenav
-    ng-click="vm.toggleList()"
     md-component-id="left"
     md-is-locked-open="$mdMedia('gt-sm')"
     class="md-whiteframe-4dp">
@@ -10,8 +9,8 @@
     <md-list>
       <!--TODO(vucalur): DRY violation: channels & engines-->
       <md-list-item ng-repeat="channel in vm.channels" ng-mouseenter="showActions = true" ng-mouseleave="showActions = false"
-                    ng-class="{'selected' : channel === vm.selected }">
-        <md-button ng-click="vm.selectItem(channel)">
+                    ui-sref-active="active">
+        <md-button ng-click="vm.toggleList()" ui-sref="channels.channel({channelId: channel.$id})">
           <h3>{{channel.name}}</h3>
         </md-button>
         <div ng-show="showActions" layout="row">
@@ -35,6 +34,6 @@
   </md-sidenav>
 
   <md-content flex>
-    <h2>{{vm.selected}}</h2>
+    <ui-view></ui-view>
   </md-content>
 </div>

@@ -8,16 +8,11 @@ class ChannelsController {
     this.$document = $document;
     this.$mdSidenav = $mdSidenav;
     this.$mdDialog = $mdDialog;
-    this.selected = null;
-    this.channels = Channels.getChannelsByUser(this.user.uid);
+    this.channels = Channels.getChannels(this.user.uid);
   }
 
   toggleList() {
     this.$mdSidenav('left').toggle();
-  }
-
-  selectItem(item) {
-    this.selected = item;
   }
 
   add(ev) {

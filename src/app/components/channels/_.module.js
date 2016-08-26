@@ -8,6 +8,7 @@ import channels from './component';
 import Articles from '../articles/service.js';
 import Parser from '../articles/parser.service.js';
 import Channels from './service';
+import channel from './channel/channel.component';
 
 import './style.scss';
 
@@ -21,4 +22,5 @@ export default angular.module('nemtu.channels', [
   .service('Channels', Channels)
   .service('Parser', Parser)
   .component('channels', channels)
+  .component('channel', channel)
 ;

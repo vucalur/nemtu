@@ -7,7 +7,7 @@ class NavbarController {
 
   logout() {
     this.AuthService.logout();
-    this.$state.go('main');
+    this.$state.go('login');
   }
 
   get displayName() {
