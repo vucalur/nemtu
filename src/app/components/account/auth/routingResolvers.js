@@ -1,5 +1,5 @@
-export function requireAuth(authService) {
+export function requireAuth(AuthService) {
   'ngInject';
 
-  return authService.requireSignIn();
+  return AuthService.requireSignIn();
 }

@@ -2,14 +2,14 @@ import angular from 'angular';
 import CreateController from "./create.controller";
 
 class ChannelsController {
-  constructor($document, $mdSidenav, $mdDialog, channelsService) {
+  constructor($document, $mdSidenav, $mdDialog, Channels) {
     'ngInject';
 
     this.$document = $document;
     this.$mdSidenav = $mdSidenav;
     this.$mdDialog = $mdDialog;
     this.selected = null;
-    this.channels = channelsService.getChannelsByUser(this.user.uid);
+    this.channels = Channels.getChannelsByUser(this.user.uid);
   }
 
   toggleList() {

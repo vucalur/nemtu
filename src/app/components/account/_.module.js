@@ -12,5 +12,5 @@ export default angular.module('nemtu.account', [
 ])
   .config(routerConfig)
   .component('login', login)
-  .service('authService', AuthService)
+  .service('AuthService', AuthService)
 ;

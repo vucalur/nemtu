@@ -1,12 +1,12 @@
 class ArticlesController {
-  constructor(articlesService) {
+  constructor(Articles) {
     'ngInject';
-    this.articlesService = articlesService;
+    this.Articles = Articles;
     this.articles = [];
   }
 
   fetch(url) {
-    this.articlesService.parsed(url)
+    this.Articles.parsed(url)
       .then(articles => {
         this.articles = articles;
       });

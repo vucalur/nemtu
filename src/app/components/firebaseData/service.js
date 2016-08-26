@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-export default class FirebaseDataService {
+export default class FirebaseData {
   constructor() {
     'ngInject';
     this.root = firebase.database().ref();

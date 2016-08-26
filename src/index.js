@@ -12,7 +12,7 @@ import ngMaterial from 'angular-material';
 import {config} from './config';
 import {routesConfig, authRequiredRedirect} from './routes';
 import navbar from './app/components/navbar/component';
-import FirebaseDataService from './app/components/firebaseData/firebaseData.service';
+import FirebaseData from './app/components/firebaseData/service';
 
 import AccountModule from './app/components/account/_.module';
 import EnginesModule from './app/components/engines/_.module';
@@ -46,5 +46,5 @@ angular.module('nemtu', [
   .config(routesConfig)
   .run(authRequiredRedirect)
   .component('nmtNavbar', navbar)
-  .service('firebaseDataService', FirebaseDataService)
+  .service('FirebaseData', FirebaseData)
 ;

@@ -1,4 +1,4 @@
-export default class ParserService {
+export default class Parser {
   parse(rawAllegroHtmlPage) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(rawAllegroHtmlPage, 'text/html');

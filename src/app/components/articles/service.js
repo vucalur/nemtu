@@ -1,12 +1,12 @@
 import angular from 'angular';
 
-export default class ArticlesService {
-  constructor($log, $http, parserService) {
+export default class Articles {
+  constructor($log, $http, Parser) {
     'ngInject';
 
     this.$log = $log;
     this.$http = $http;
-    this.parser = parserService;
+    this.Parser = Parser;
   }
 
   _fetch(allegroUrl) {
@@ -30,6 +30,6 @@ export default class ArticlesService {
 
   parsed(allegroUrl) {
     return this._fetch(allegroUrl)
-      .then(this.parser.parse);
+      .then(this.Parser.parse);
   }
 }

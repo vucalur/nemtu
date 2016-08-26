@@ -1,10 +1,10 @@
 class LoginController {
-  constructor($log, $state, authService) {
+  constructor($log, $state, AuthService) {
     'ngInject';
 
     this.$log = $log;
     this.$state = $state;
-    this._authService = authService;
+    this.AuthService = AuthService;
     this._providers = [
       {icon: 'google-plus', text: 'Google plus', code: 'google'},
       {icon: 'github-circle', text: 'GitHub', code: 'github'},
@@ -18,7 +18,7 @@ class LoginController {
   }
 
   login(providerCode) {
-    this._authService.login(providerCode).then(authData => {
+    this.AuthService.login(providerCode).then(authData => {
       this.$log.log("Logged in as:", authData.user.uid);
       this.$state.go('main');
     }).catch(error => {

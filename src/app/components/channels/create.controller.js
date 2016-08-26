@@ -1,11 +1,11 @@
 import angular from "angular";
 
 export default class CreateController {
-  constructor($mdDialog, enginesService, channelToEdit, uid) {
+  constructor($mdDialog, Engines, channelToEdit, uid) {
     'ngInject';
 
     this.$mdDialog = $mdDialog;
-    this.engines = enginesService.getEnginesByUser(uid);
+    this.engines = Engines.getEnginesByUser(uid);
     this.channel = this._createWorkingDraft(channelToEdit);
     this._originalChannel = channelToEdit;
   }

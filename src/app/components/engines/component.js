@@ -2,12 +2,12 @@ import angular from 'angular';
 import CreateController from './create.controller';
 
 class ListController {
-  constructor($document, $mdDialog, enginesService) {
+  constructor($document, $mdDialog, Engines) {
     'ngInject';
 
     this.$document = $document;
     this.$mdDialog = $mdDialog;
-    this.engines = enginesService.getEnginesByUser(this.user.uid);
+    this.engines = Engines.getEnginesByUser(this.user.uid);
   }
 
   add(ev) {
