@@ -1,5 +1,5 @@
 export default {
-  templateUrl: 'app/components/channels/channel/channel.template.html',
+  templateUrl: 'app/channels/channel/channel.template.html',
   controllerAs: 'vm',
   bindings: {
     channel: '<'

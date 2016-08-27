@@ -14,7 +14,7 @@ class ArticlesController {
 }
 
 export default {
-  templateUrl: 'app/components/articles/articles.html',
+  templateUrl: 'app/articles/articles.html',
   controller: ArticlesController,
   controllerAs: 'vm'
 };

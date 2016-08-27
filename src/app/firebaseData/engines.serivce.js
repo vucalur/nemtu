@@ -1,15 +1,15 @@
-export default class EnginesService {
-  constructor($firebaseArray, FirebaseData) {
+export default class Engines {
+  constructor($firebaseArray, Root) {
     'ngInject';
 
     this.$firebaseArray = $firebaseArray;
-    this.FirebaseData = FirebaseData;
+    this.Root = Root;
     this.engines = null;
   }
 
   getEnginesByUser(uid) {
     if (!this.engines) {
-      const enginesRef = this.FirebaseData.uEngines.child(uid);
+      const enginesRef = this.Root.uEngines.child(uid);
       this.engines = this.$firebaseArray(enginesRef);
     }
     return this.engines;

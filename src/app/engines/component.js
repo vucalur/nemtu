@@ -29,7 +29,7 @@ class ListController {
       controller: CreateController,
       controllerAs: 'vm',
       locals: {engineToEdit},
-      templateUrl: 'app/components/engines/create.html',
+      templateUrl: 'app/engines/create.html',
       parent: angular.element(this.$document.body),
       targetEvent: ev,
       clickOutsideToClose: false,
@@ -56,7 +56,7 @@ class ListController {
 }
 
 export default {
-  templateUrl: 'app/components/engines/list.html',
+  templateUrl: 'app/engines/list.html',
   controller: ListController,
   controllerAs: 'vm',
   bindings: {

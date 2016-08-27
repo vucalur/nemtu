@@ -11,12 +11,15 @@ import ngMaterial from 'angular-material';
 
 import {config} from './config';
 import {routesConfig, authRequiredRedirect} from './routes';
-import navbar from './app/components/navbar/component';
-import FirebaseData from './app/components/firebaseData/service';
+import navbar from './app/navbar/component';
 
-import AccountModule from './app/components/account/_.module';
-import EnginesModule from './app/components/engines/_.module';
-import ChannelsModule from './app/components/channels/_.module';
+import Root from './app/firebaseData/root.service';
+import Engines from "./app/firebaseData/engines.serivce";
+import Channels from "./app/firebaseData/channels.service";
+
+import AccountModule from './app/account/_.module';
+import EnginesModule from './app/engines/_.module';
+import ChannelsModule from './app/channels/_.module';
 
 // Material design css
 import 'angular-material/angular-material.css';
@@ -46,5 +49,7 @@ angular.module('nemtu', [
   .config(routesConfig)
   .run(authRequiredRedirect)
   .component('nmtNavbar', navbar)
-  .service('FirebaseData', FirebaseData)
+  .service('Root', Root)
+  .service('Engines', Engines)
+  .service('Channels', Channels)
 ;

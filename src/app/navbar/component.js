@@ -20,7 +20,7 @@ class NavbarController {
 }
 
 export default {
-  templateUrl: 'app/components/navbar/navbar.html',
+  templateUrl: 'app/navbar/navbar.html',
   controller: NavbarController,
   controllerAs: 'vm',
   bindings: {

@@ -1,23 +1,23 @@
 export default class Channels {
-  constructor($firebaseArray, $firebaseObject, FirebaseData) {
+  constructor($firebaseArray, $firebaseObject, Root) {
     'ngInject';
 
     this.$firebaseArray = $firebaseArray;
     this.$firebaseObject = $firebaseObject;
-    this.FirebaseData = FirebaseData;
+    this.Root = Root;
     this.channels = null;
   }
 
   getChannels(uid) {
     if (!this.channels) {
-      const ref = this.FirebaseData.uChannels.child(uid);
+      const ref = this.Root.uChannels.child(uid);
       this.channels = this.$firebaseArray(ref);
     }
     return this.channels;
   }
 
   getChannel(uid, channelId) {
-    const ref = this.FirebaseData.uChannels.child(uid).child(channelId);
+    const ref = this.Root.uChannels.child(uid).child(channelId);
     return this.$firebaseObject(ref);
   }
 }

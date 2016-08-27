@@ -5,7 +5,6 @@ import firebase from 'angularfire';
 
 import {routerConfig} from './_.route';
 import engines from './component';
-import Engines from './serivce';
 
 import './style.scss';
 
@@ -18,5 +17,4 @@ export default angular.module('nemtu.engines', [
 ])
   .config(routerConfig)
   .component('engines', engines)
-  .service('Engines', Engines)
 ;
