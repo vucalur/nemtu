@@ -1,6 +1,6 @@
 import angular from 'angular';
 
-export default class Articles {
+export default class FetchArticles {
   constructor($log, $http, Parser) {
     'ngInject';
 
@@ -9,27 +9,27 @@ export default class Articles {
     this.Parser = Parser;
   }
 
-  _fetch(allegroUrl) {
+  _fetch(url) {
     const req = {
       method: 'GET',
       url: 'nemtuRelay',
       headers: {
-        nemtuUrl: allegroUrl
+        nemtuUrl: url
       }
     };
 
     return this.$http(req)
       .then(response => {
-        this.$log.info(`NemtuRelay successful for ${allegroUrl}.`);
+        this.$log.info(`NemtuRelay successful for ${url}.`);
         return response.data;
       })
       .catch(error => {
-        this.$log.error(`NemtuRelay failed for ${allegroUrl}.\n${angular.toJson(error.data, true)}`);
+        this.$log.error(`NemtuRelay failed for ${url}.\n${angular.toJson(error.data, true)}`);
       });
   }
 
-  parsed(allegroUrl) {
-    return this._fetch(allegroUrl)
-      .then(this.Parser.parse);
+  parsed(url, engineToUse) {
+    return this._fetch(url)
+      .then(rawHtml => this.Parser.parse(rawHtml, engineToUse));
   }
 }

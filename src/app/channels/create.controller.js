@@ -5,7 +5,7 @@ export default class CreateController {
     'ngInject';
 
     this.$mdDialog = $mdDialog;
-    this.engines = Engines.getEnginesByUser(uid);
+    this.engines = Engines.getEngines(uid);
     this.channel = this._createWorkingDraft(channelToEdit);
     this._originalChannel = channelToEdit;
   }

@@ -17,18 +17,28 @@
         </md-input-container>
         <fieldset>
           <legend>Article data selectors</legend>
-          <p>Use selectors relative to article selector specified above</p>
+          <span class="desc">
+            Use selectors relative to article selector specified above.
+          </span>
           <md-input-container class="md-block">
+            <label>Unique identifier (id)</label>
+            <input ng-model="vm.engine.article.idSel">
+          </md-input-container>
+          <md-input-container>
             <label>title</label>
             <input ng-model="vm.engine.article.titleSel">
           </md-input-container>
           <md-input-container class="md-block">
-            <label>link</label>
-            <input ng-model="vm.engine.article.linkSel">
+            <label>URL</label>
+            <input ng-model="vm.engine.article.urlSel">
           </md-input-container>
           <md-input-container class="md-block">
-            <label>image</label>
-            <input ng-model="vm.engine.article.imageSel">
+            <label>image URL</label>
+            <input ng-model="vm.engine.article.imgUrlSel">
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>price</label>
+            <input ng-model="vm.engine.article.priceSel">
           </md-input-container>
         </fieldset>
         <md-switch ng-model="vm.engine.pagination.active" aria-label="Can search results come in pages ?">
@@ -40,13 +50,11 @@
           <md-radio-group ng-model="vm.engine.pagination.type">
             <md-radio-button value="query">pagination by URL query param<br/>
               <span class="desc">
-                TODO(vucalur): Brief explaination.<br/>
                 Crawler will stop when next returned page doesn't contain any articles.
               </span>
             </md-radio-button>
             <md-radio-button value="linkToNext">pagination by link to next page<br/>
               <span class="desc">
-                TODO(vucalur): Brief explaination.<br/>
                 Crawler will stop when next returned page doesn't contain such link.
               </span>
             </md-radio-button>

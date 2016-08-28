@@ -16,10 +16,5 @@ export function routerConfig($stateProvider) {
       resolve: {
         channel: (user, $transition$, Channels) => Channels.getChannel(user.uid, $transition$.params().channelId)
       }
-    })
-    .state({
-      name: 'articles',
-      url: '/articles',
-      component: 'articles'
     });
 }

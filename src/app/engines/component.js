@@ -7,7 +7,7 @@ class ListController {
 
     this.$document = $document;
     this.$mdDialog = $mdDialog;
-    this.engines = Engines.getEnginesByUser(this.user.uid);
+    this.engines = Engines.getEngines(this.user.uid);
   }
 
   add(ev) {
