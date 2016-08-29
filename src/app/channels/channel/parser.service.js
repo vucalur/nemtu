@@ -5,7 +5,7 @@ export default class Parser {
     this.$log = $log;
   }
 
-  parse(rawHtml, engine) {
+  parseArticles(rawHtml, engine) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(rawHtml, 'text/html');
     const articlesQuery = engine.articleSel;

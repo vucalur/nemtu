@@ -12,6 +12,9 @@
           <input ng-model="vm.channel.name">
         </md-input-container>
         <md-input-container class="md-block">
+          <md-tooltip md-delay="500" md-direction="right">
+            Must point to the first page with results
+          </md-tooltip>
           <label>URL to fetch content from</label>
           <input ng-model="vm.channel.url">
         </md-input-container>

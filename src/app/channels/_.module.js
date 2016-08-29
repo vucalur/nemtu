@@ -4,7 +4,7 @@ import ngMaterial from 'angular-material';
 
 import {routerConfig} from './_.route';
 import channels from './component';
-import FetchArticles from './channel/fetchArticles.service';
+import Crawler from './channel/crawler.service';
 import Parser from './channel/parser.service';
 import channel from './channel/channel.component';
 
@@ -15,7 +15,7 @@ export default angular.module('nemtu.channels', [
   uiRouter
 ])
   .config(routerConfig)
-  .service('FetchArticles', FetchArticles)
+  .service('Crawler', Crawler)
   .service('Parser', Parser)
   .component('channels', channels)
   .component('channel', channel)

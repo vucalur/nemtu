@@ -1,14 +1,14 @@
 class ChannelController {
-  constructor(Engines, FetchArticles) {
+  constructor(Engines, Crawler) {
     'ngInject';
 
-    this.FetchArticles = FetchArticles;
+    this.Crawler = Crawler;
     this.engine = Engines.getEngine(this.user.uid, this.channel.engine_id);
     this.articles = null;
   }
 
   fetch() {
-    this.FetchArticles.parsed(this.channel.url, this.engine)
+    this.Crawler.fetchArticles(this.channel.url, this.engine)
       .then(articles => {
         this.articles = articles;
       });

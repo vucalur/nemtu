@@ -86,6 +86,9 @@
     },
     "extends": [
       "xo-space/esnext"
-    ]
+    ],
+    "rules": {
+      "no-else-return": "off"
+    }
   }
 }
