@@ -38,7 +38,7 @@ export default class Crawler {
 
   _handleSinglePage(url, engine) {
     return this._fetchHtml(url)
-      .then(rawHtml => this.Parser.parseArticles(rawHtml, engine));
+      .then(rawHtml => this.Parser.prepareDocument(rawHtml, engine).parseArticles());
   }
 
   _handlePagination(url, engine) {
@@ -63,7 +63,7 @@ export default class Crawler {
 
     return this._fetchHtml(url)
       .then(rawHtml => {
-        const newArticles = this.Parser.parseArticles(rawHtml, engine);
+        const newArticles = this.Parser.prepareDocument(rawHtml, engine).parseArticles();
         if (this._pageEmpty(newArticles)) {
           this.$log.info(`Total of ${articles.length} articles crawled.`);
           return articles;
@@ -87,8 +87,24 @@ export default class Crawler {
     return articles.length === 0;
   }
 
-  _handlePaginationLink() {
-    // TODO(vucalur):
-    return null;
+  _handlePaginationLink(url, engine) {
+    const articles = [];
+    return this._crawlByLink(url, engine, articles);
+  }
+
+  _crawlByLink(url, engine, articles) {
+    return this._fetchHtml(url)
+      .then(rawHtml => {
+        const doc = this.Parser.prepareDocument(rawHtml, engine);
+        const newArticles = doc.parseArticles();
+        const nextUrl = doc.parseLinkToNextPage();
+        articles.push(...newArticles);
+        if (this._pageEmpty(newArticles) || !nextUrl) {
+          this.$log.info(`Total of ${articles.length} articles crawled.`);
+          return articles;
+        } else {
+          return this._crawlByLink(nextUrl, engine, articles);
+        }
+      });
   }
 }
