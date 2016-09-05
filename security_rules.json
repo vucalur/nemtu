@@ -11,6 +11,20 @@
         ".read": "auth != null && auth.uid == $uid",
         ".write": "auth != null && auth.uid == $uid"
       }
+    },
+    "user-channel-articles": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid",
+        "$channelId": {
+          "read": {
+            ".indexOn": "listingId"
+          },
+          "unread": {
+            ".indexOn": "listingId"
+          }
+        }
+      }
     }
   }
 }

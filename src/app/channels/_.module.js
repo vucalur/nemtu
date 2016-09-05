@@ -9,6 +9,7 @@ import Parser from './channel/parser.service';
 import channel from './channel/channel.component';
 
 import './style.scss';
+import './channel/style.scss';
 
 export default angular.module('nemtu.channels', [
   ngMaterial,

@@ -16,6 +16,7 @@ import navbar from './app/navbar/component';
 import Root from './app/firebaseData/root.service';
 import Engines from "./app/firebaseData/engines.serivce";
 import Channels from "./app/firebaseData/channels.service";
+import Channel from "./app/firebaseData/channel.service";
 
 import AccountModule from './app/account/_.module';
 import EnginesModule from './app/engines/_.module';
@@ -52,4 +53,5 @@ angular.module('nemtu', [
   .service('Root', Root)
   .service('Engines', Engines)
   .service('Channels', Channels)
+  .service('Channel', Channel)
 ;

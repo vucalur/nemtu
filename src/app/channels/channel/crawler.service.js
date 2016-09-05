@@ -65,6 +65,7 @@ export default class Crawler {
       .then(rawHtml => {
         const newArticles = this.Parser.parseArticles(rawHtml, engine);
         if (this._pageEmpty(newArticles)) {
+          this.$log.info(`Total of ${articles.length} articles crawled.`);
           return articles;
         } else {
           articles.push(...newArticles);

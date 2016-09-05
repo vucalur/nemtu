@@ -4,14 +4,14 @@
     "angular-animate": "^1.5.7",
     "angular-aria": "^1.5.7",
     "angular-cookies": "^1.5.7",
-    "angular-material": "~1.1.0-rc.5",
+    "angular-material": "~1.1.1",
     "angular-material-icons": "^0.7.0",
     "angular-resource": "^1.5.7",
     "angular-sanitize": "^1.5.7",
     "angular-ui-router": ">=1.0.0-beta.1 <1.0.1",
     "angularfire": "~2.0.1",
     "file-loader": "^0.9.0",
-    "firebase": "~3.2.1",
+    "firebase": "~3.3.0",
     "material-design-iconfont": "~0.1.7",
     "material-design-icons": "^2.2.3",
     "webpack-material-design-icons": "0.0.2"
@@ -88,7 +88,10 @@
       "xo-space/esnext"
     ],
     "rules": {
-      "no-else-return": "off"
+      "no-else-return": "off",
+      "no-unused-vars": "off",
+      "no-negated-condition": "off",
+      "camelcase": "off"
     }
   }
 }
