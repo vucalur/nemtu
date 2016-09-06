@@ -97,13 +97,23 @@ class Crawler_ScopePrototype {
         const newArticles = doc.parseArticles();
         const nextUrl = doc.parseLinkToNextPage();
         articlesAccum.push(...newArticles);
-        if (this._pageEmpty(newArticles) || !nextUrl) {
+        if (this._pageEmpty(newArticles) || !this._isValid(nextUrl)) {
           this.$log.info(`Total of ${articlesAccum.length} articles crawled.`);
           return articlesAccum;
         } else {
           return this._crawlByLink(nextUrl, articlesAccum);
         }
       });
+  }
+
+  _isValid(urlString) {
+    if (!urlString) {
+      return false;
+    }
+    const url = new URL(urlString);
+    const protocol = url.protocol;
+    const valid = protocol === 'http:' || protocol === 'https:';
+    return valid;
   }
 }
 
