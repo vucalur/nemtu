@@ -3,13 +3,15 @@
 <md-button ng-click="vm.fetch()" class="md-primary md-raised">Fetch new articles</md-button>
 
 <md-subheader class="md-no-sticky">Fetched articles:</md-subheader>
-<md-virtual-repeat-container id="dynamicArticlesContainer">
-  <md-list-item class="md-3-line" md-virtual-repeat="article in vm.dynamicArticles" md-on-demand
-                ng-href="{{article.url}}" target="_blank">
-    <img ng-src="{{article.imgUrl}}" class="md-avatar" alt="{{article.title}}"/>
+<md-virtual-repeat-container id="dynamicArticlesContainer" md-top-index="vm.topIndex">
+  <md-list-item id="article" class="md-3-line"
+                md-virtual-repeat="article in vm.dynamicArticles" md-on-demand
+                ng-href="{{article.data.url}}" target="_blank"
+                ng-class="article.isRead ? 'read' : 'unread'">
+    <img ng-src="{{article.data.imgUrl}}" class="md-avatar" alt="{{article.data.title}}"/>
     <div class="md-list-item-text" layout="column">
-      <h3>{{ article.title }}</h3>
-      <h4>{{ article.price }}</h4>
+      <h3>{{ article.data.title }}</h3>
+      <h4>{{ article.data.price }}</h4>
     </div>
   </md-list-item>
 </md-virtual-repeat-container>

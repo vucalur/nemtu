@@ -91,7 +91,9 @@
       "no-else-return": "off",
       "no-unused-vars": "off",
       "no-negated-condition": "off",
-      "camelcase": "off"
+      "camelcase": "off",
+      "no-warning-comments": "off",
+      "babel/object-shorthand": "off"
     }
   }
 }

@@ -1,3 +1,7 @@
 md-virtual-repeat-container#dynamicArticlesContainer {
   height: 450px;
 }
+
+#article.unread {
+  background-color: rgb(255, 224, 178);
+}

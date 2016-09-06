@@ -6,7 +6,6 @@ import angular from "angular";
  * and to manage pagination cursors' states as well.
  */
 class Channel_ScopePrototype {
-
   constructor(Root, $log, $q, uid, channelId) {
     this.Root = Root;
     this.$log = $log;
@@ -36,7 +35,7 @@ class Channel_ScopePrototype {
       .then(() => this._filterOut(this._unreadRef, mapId2Article))
       .then(() => {
         const onlyNewArticles = this._extractArticles(mapId2Article);
-        this.$log.info(`After filtering out articles fetched earlier, ${onlyNewArticles.length} articles left`);
+        this.$log.info(`After filtering out articles fetched earlier, ${onlyNewArticles.length} article${onlyNewArticles.length === 1 ? '' : 's'} left`);
         return onlyNewArticles;
       });
   }
@@ -73,7 +72,17 @@ class Channel_ScopePrototype {
   }
 
   addUnread(articles) {
-    this._unreadPaged.addOmitPagination(articles);
+    this._unreadPaged.addOmitPagination(...articles);
+  }
+
+  markAsRead(article) {
+    // removal will not affect pagination since article has already been fetched if this method is invoked
+    this._removeUnread(article);
+    this._readPaged.addOmitPagination(article);
+  }
+
+  _removeUnread(article) {
+    this._unreadRef.child(article.$key).remove();
   }
 }
 

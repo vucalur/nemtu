@@ -8,6 +8,7 @@ class DynamicArticles {
     // TODO(vucalur): better way. Static const ?
     this._FETCH_IN_PROGRESS = 1234; // marker - dummy value
     this._LENGTH_UNKNOWN = -1; // must be negative
+    this._VIEW_SIZE_IN_ARTICLES = 5;
     this._length = this._LENGTH_UNKNOWN;
     this.ChannelInstance = ChannelInstance;
     this._allUnreadFetched = false;
@@ -18,13 +19,15 @@ class DynamicArticles {
     const article = this._fetched[index];
     if (!article) {
       this._fetchPage();
-    } else if (article === this._FETCH_IN_PROGRESS) {
+    } else if (this._fetchInProgress(article)) {
       return;
     } else {
-      // TODO(vucalur): remove debug
-      this.$log.debug(`getItemAtIndex(${index}): ${this._fetched[index].title}`);
       return this._fetched[index];
     }
+  }
+
+  _fetchInProgress(article) {
+    return article === this._FETCH_IN_PROGRESS;
   }
 
   _fetchPage() {
@@ -34,7 +37,7 @@ class DynamicArticles {
       this._addFIPMarkers();
       this.ChannelInstance.unreadNextPage().then(page => {
         this._removeFIPMarkers();
-        this._fetched.push(...page);
+        this._addPage(page, false);
         if (this._pageNotFull(page)) {
           this._allUnreadFetched = true;
           this._fetchPageRead();   // if page wasn't completely empty we're fetching more than _PAGE_SIZE in a single step. Won't do harm.
@@ -54,6 +57,11 @@ class DynamicArticles {
     this._fetched.splice(removeStart, this._PAGE_SIZE);
   }
 
+  _addPage(page, isRead) {
+    const pageWithStatus = page.map(article => ({data: article, isRead: isRead}));
+    this._fetched.push(...pageWithStatus);
+  }
+
   _pageNotFull(page) {
     return page.length < this._PAGE_SIZE;
   }
@@ -62,24 +70,62 @@ class DynamicArticles {
     this._addFIPMarkers();
     this.ChannelInstance.readNextPage().then(page => {
       this._removeFIPMarkers();
-      this._fetched.push(...page);
+      this._addPage(page, true);
       if (this._pageNotFull(page)) {
-        this._length = this._fetched.length;
+        this._markAllFetched();
       }
     });
   }
 
   getLength() {
-    if (this._length === this._LENGTH_UNKNOWN) {
-      return 50000;
-    } else {
+    if (this._allFetched()) {
       return this._length;
+    } else {
+      return 50000; // arbitrarily large number
+    }
+  }
+
+  _allFetched() {
+    return this._length !== this._LENGTH_UNKNOWN;
+  }
+
+  _markAllFetched() {
+    this._length = this._fetched.length;
+  }
+
+  markRead(index) {
+    if (this._fetched.length < index) { // shouldn't ever happen, but just in case
+      return;
+    }
+    if (this._allFetched() && this._hasScrolledToTheBottom(index)) {
+      this._markAsReadAllRemainingUnread(index);
+    } else {
+      this._markAsReadSingleUnread(index);
+    }
+  }
+
+  _hasScrolledToTheBottom(index) {
+    index++;  // mdVirtualRepeat tends to sent decremented indices - crazy
+    return this._length - index <= this._VIEW_SIZE_IN_ARTICLES;
+  }
+
+  _markAsReadAllRemainingUnread(index) {
+    for (let i = index; i < this._length; i++) {
+      this._markAsReadSingleUnread(i);
+    }
+  }
+
+  _markAsReadSingleUnread(index) {
+    const article = this._fetched[index];
+    if (article && !this._fetchInProgress(article) && !article.isRead) {
+      article.isRead = true;
+      this.ChannelInstance.markAsRead(article.data);
     }
   }
 }
 
 class ChannelController {
-  constructor($log, Engines, Channel, Crawler) {
+  constructor($log, $scope, Engines, Channel, Crawler) {
     'ngInject';
 
     this.engine = Engines.getEngine(this.user.uid, this.channel.engine_id);
@@ -88,6 +134,13 @@ class ChannelController {
     this.CrawlerInstance = Crawler.createInstance(this.channel.url, this.engine);
     this.ChannelInstance = Channel.createInstance(this.user.uid, this.channel.$id);
     this.dynamicArticles = new DynamicArticles($log, this.ChannelInstance);
+    this._registerMarkReadOnScroll($scope);
+  }
+
+  _registerMarkReadOnScroll($scope) {
+    $scope.$watch('vm.topIndex', newVal => {
+      this.dynamicArticles.markRead(newVal);
+    });
   }
 
   fetch() {
