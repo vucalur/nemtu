@@ -12,11 +12,12 @@ class ParsedDocument {
     const parsedArticles = [];
 
     for (let article = articles.iterateNext(); article; article = articles.iterateNext()) {
-      const listingId = this._doc.evaluate(this._engine.article.listingIdSel, article, null, XPathResult.STRING_TYPE, null);
-      const title = this._doc.evaluate(this._engine.article.titleSel, article, null, XPathResult.STRING_TYPE, null);
-      const url = this._doc.evaluate(this._engine.article.urlSel, article, null, XPathResult.STRING_TYPE, null);
-      const imgUrl = this._doc.evaluate(this._engine.article.imgUrlSel, article, null, XPathResult.STRING_TYPE, null);
-      const price = this._doc.evaluate(this._engine.article.priceSel, article, null, XPathResult.STRING_TYPE, null);
+      // TODO(vucalur): sanitize engine model instead of "|| null"
+      const listingId = this._doc.evaluate(this._engine.article.listingIdSel || null, article, null, XPathResult.STRING_TYPE, null);
+      const title = this._doc.evaluate(this._engine.article.titleSel || null, article, null, XPathResult.STRING_TYPE, null);
+      const url = this._doc.evaluate(this._engine.article.urlSel || null, article, null, XPathResult.STRING_TYPE, null);
+      const imgUrl = this._doc.evaluate(this._engine.article.imgUrlSel || null, article, null, XPathResult.STRING_TYPE, null);
+      const price = this._doc.evaluate(this._engine.article.priceSel || null, article, null, XPathResult.STRING_TYPE, null);
       parsedArticles.push({
         listingId: listingId.stringValue,
         title: title.stringValue,
