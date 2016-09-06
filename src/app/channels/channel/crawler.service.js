@@ -1,12 +1,12 @@
 import angular from 'angular';
 
-export default class Crawler {
-  constructor($log, $http, Parser) {
-    'ngInject';
-
+class Crawler_ScopePrototype {
+  constructor($log, $http, Parser, url, engine) {
     this.$log = $log;
     this.$http = $http;
     this.Parser = Parser;
+    this._url = url;
+    this._engine = engine;
   }
 
   _fetchHtml(url) {
@@ -28,83 +28,90 @@ export default class Crawler {
       });
   }
 
-  fetchArticles(url, engine) {
-    if (engine.pagination.active) {
-      return this._handlePagination(url, engine);
+  fetchArticles() {
+    if (this._engine.pagination.active) {
+      return this._handlePagination();
     } else {
-      return this._handleSinglePage(url, engine);
+      return this._handleSinglePage();
     }
   }
 
-  _handleSinglePage(url, engine) {
-    return this._fetchHtml(url)
-      .then(rawHtml => this.Parser.prepareDocument(rawHtml, engine).parseArticles());
+  _handleSinglePage() {
+    return this._fetchHtml(this._url)
+      .then(rawHtml => this.Parser.prepareDocument(rawHtml, this._engine).parseArticles());
   }
 
-  _handlePagination(url, engine) {
-    switch (engine.pagination.type) {
+  _handlePagination() {
+    switch (this._engine.pagination.type) {
       case 'query':
-        return this._handlePaginationQuery(url, engine);
+        return this._handlePaginationQuery();
       case 'linkToNext':
-        return this._handlePaginationLink(url, engine);
+        return this._handlePaginationLink();
       // no default
     }
   }
 
-  // TODO(vucalur): refactor constant passing engine and url
-  _handlePaginationQuery(url, engine) {
-    const articles = [];
-    const startPage = engine.pagination.query.start;
-    return this._crawlByQuery(url, engine, articles, startPage);
+  _handlePaginationQuery() {
+    const articlesAccum = [];
+    const startPage = this._engine.pagination.query.start;
+    return this._crawlByQuery(startPage, articlesAccum);
   }
 
-  _crawlByQuery(url, engine, articles, page) {
-    url = this._setPage(url, page, engine);
+  _crawlByQuery(page, articlesAccum) {
+    const url = this._setPage(this._url, page);
 
     return this._fetchHtml(url)
       .then(rawHtml => {
-        const newArticles = this.Parser.prepareDocument(rawHtml, engine).parseArticles();
+        const newArticles = this.Parser.prepareDocument(rawHtml, this._engine).parseArticles();
         if (this._pageEmpty(newArticles)) {
-          this.$log.info(`Total of ${articles.length} articles crawled.`);
-          return articles;
+          this.$log.info(`Total of ${articlesAccum.length} articles crawled.`);
+          return articlesAccum;
         } else {
-          articles.push(...newArticles);
-          page += engine.pagination.query.inc;
-          return this._crawlByQuery(url, engine, articles, page);
+          articlesAccum.push(...newArticles);
+          page += this._engine.pagination.query.inc;
+          return this._crawlByQuery(page, articlesAccum);
         }
       });
   }
 
-  _setPage(urlString, page, engine) {
-    const paramName = engine.pagination.query.param;
+  _setPage(urlString, page) {
+    const paramName = this._engine.pagination.query.param;
     const url = new URL(urlString);
     url.searchParams.set(paramName, page);
-    const urlStringPageSet = url.href;
-    return urlStringPageSet;
+    return url.href;
   }
 
   _pageEmpty(articles) {
     return articles.length === 0;
   }
 
-  _handlePaginationLink(url, engine) {
-    const articles = [];
-    return this._crawlByLink(url, engine, articles);
+  _handlePaginationLink() {
+    const articlesAccum = [];
+    return this._crawlByLink(this._url, articlesAccum);
   }
 
-  _crawlByLink(url, engine, articles) {
+  _crawlByLink(url, articlesAccum) {
     return this._fetchHtml(url)
       .then(rawHtml => {
-        const doc = this.Parser.prepareDocument(rawHtml, engine);
+        const doc = this.Parser.prepareDocument(rawHtml, this._engine);
         const newArticles = doc.parseArticles();
         const nextUrl = doc.parseLinkToNextPage();
-        articles.push(...newArticles);
+        articlesAccum.push(...newArticles);
         if (this._pageEmpty(newArticles) || !nextUrl) {
-          this.$log.info(`Total of ${articles.length} articles crawled.`);
-          return articles;
+          this.$log.info(`Total of ${articlesAccum.length} articles crawled.`);
+          return articlesAccum;
         } else {
-          return this._crawlByLink(nextUrl, engine, articles);
+          return this._crawlByLink(nextUrl, articlesAccum);
         }
       });
+  }
+}
+
+export default class Crawler {
+  constructor($log, $http, Parser) {
+    'ngInject';
+
+    this.createInstance = (url, engine) =>
+      new Crawler_ScopePrototype($log, $http, Parser, url, engine);
   }
 }

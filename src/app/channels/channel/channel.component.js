@@ -82,8 +82,10 @@ class ChannelController {
   constructor($log, Engines, Channel, Crawler) {
     'ngInject';
 
-    this.Crawler = Crawler;
     this.engine = Engines.getEngine(this.user.uid, this.channel.engine_id);
+    // danger: Passing engine, which may not have been resolved from firebase yet.
+    // Here works, since the only work being done is saving the reference for later use
+    this.CrawlerInstance = Crawler.createInstance(this.channel.url, this.engine);
     this.ChannelInstance = Channel.createInstance(this.user.uid, this.channel.$id);
     this.dynamicArticles = new DynamicArticles($log, this.ChannelInstance);
   }
@@ -91,7 +93,8 @@ class ChannelController {
   fetch() {
     const chi = this.ChannelInstance;
 
-    this.Crawler.fetchArticles(this.channel.url, this.engine)
+    // TODO(vucalur): Not liking this bind() mess. Why "filterOnlyNew = articles => {" ain't working ?!
+    this.CrawlerInstance.fetchArticles()
       .then(angular.bind(chi, chi.filterOnlyNew))
       .then(angular.bind(chi, chi.addUnread));
   }
