@@ -38,7 +38,11 @@ class Crawler_ScopePrototype {
 
   _handleSinglePage() {
     return this._fetchHtml(this._url)
-      .then(rawHtml => this.Parser.prepareDocument(rawHtml, this._engine).parseArticles());
+      .then(rawHtml => {
+        const articles = this.Parser.prepareDocument(rawHtml, this._engine).parseArticles();
+        this._makeUrlsAbsolute(articles, this._url);
+        return articles;
+      });
   }
 
   _handlePagination() {
@@ -67,6 +71,7 @@ class Crawler_ScopePrototype {
           this.$log.info(`Total of ${articlesAccum.length} articles crawled.`);
           return articlesAccum;
         } else {
+          this._makeUrlsAbsolute(newArticles, url);
           articlesAccum.push(...newArticles);
           page += this._engine.pagination.query.inc;
           return this._crawlByQuery(page, articlesAccum);
@@ -78,7 +83,7 @@ class Crawler_ScopePrototype {
     const paramName = this._engine.pagination.query.param;
     const url = new URL(urlString);
     url.searchParams.set(paramName, page);
-    return url.href;
+    return url.toString();
   }
 
   _pageEmpty(articles) {
@@ -95,7 +100,9 @@ class Crawler_ScopePrototype {
       .then(rawHtml => {
         const doc = this.Parser.prepareDocument(rawHtml, this._engine);
         const newArticles = doc.parseArticles();
-        const nextUrl = doc.parseLinkToNextPage();
+        this._makeUrlsAbsolute(newArticles, url);
+        let nextUrl = doc.parseLinkToNextPage();
+        nextUrl = this._absoluteUrl(nextUrl, url);
         articlesAccum.push(...newArticles);
         if (this._pageEmpty(newArticles) || !this._isValid(nextUrl)) {
           this.$log.info(`Total of ${articlesAccum.length} articles crawled.`);
@@ -114,6 +121,22 @@ class Crawler_ScopePrototype {
     const protocol = url.protocol;
     const valid = protocol === 'http:' || protocol === 'https:';
     return valid;
+  }
+
+  _makeUrlsAbsolute(articles, baseUrl) {
+    articles.forEach(article => {
+      for (const prop of ['url', 'imgUrl']) {
+        article[prop] = this._absoluteUrl(article[prop], baseUrl);
+      }
+    });
+  }
+
+  _absoluteUrl(urlString, baseUrlString) {
+    if (!urlString) {
+      return urlString;
+    }
+    const url = new URL(urlString, baseUrlString);
+    return url.toString();
   }
 }
 

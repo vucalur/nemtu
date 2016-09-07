@@ -42,12 +42,10 @@ export default class Parser {
   constructor($log) {
     'ngInject';
 
-    this.$log = $log;
-  }
-
-  prepareDocument(rawHtml, engine) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(rawHtml, 'text/html');
-    return new ParsedDocument(this.$log, doc, engine);
+    this.prepareDocument = (rawHtml, engine) => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(rawHtml, 'text/html');
+      return new ParsedDocument($log, doc, engine);
+    };
   }
 }
