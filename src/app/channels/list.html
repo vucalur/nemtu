@@ -16,12 +16,10 @@
         <div ng-show="showActions" layout="row">
           <md-button class="md-raised md-fab md-mini" ng-click="vm.edit($event, channel)">
             <md-tooltip>Edit</md-tooltip>
-            <!--TODO(vucalur): find alternative to angular-material-icons-->
-            <ng-md-icon icon="mode_edit"/>
+            <ng-md-icon icon="mode_edit"></ng-md-icon>
           </md-button>
           <md-button class="md-raised md-fab md-mini md-warn" ng-click="vm.remove($event, channel)">
             <md-tooltip>Remove</md-tooltip>
-            <!--TODO(vucalur): find alternative to angular-material-icons-->
             <ng-md-icon icon="delete"></ng-md-icon>
           </md-button>
         </div>

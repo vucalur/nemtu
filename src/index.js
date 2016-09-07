@@ -6,8 +6,7 @@ import ngSanitize from 'angular-sanitize';
 import uiRouter from 'angular-ui-router';
 import firebase from 'angularfire';
 import ngMaterial from 'angular-material';
-// TODO(vucalur): find alternative to angular-material-icons
-// import ngMdIcons from 'material-design-icons';
+import ngMdIcons from 'angular-material-icons';
 
 import {config} from './config';
 import {routesConfig, authRequiredRedirect} from './routes';
@@ -24,6 +23,7 @@ import ChannelsModule from './app/channels/_.module';
 
 // Material design css
 import 'angular-material/angular-material.css';
+import 'angular-material-icons/angular-material-icons.css';
 
 import './index.scss';
 
@@ -38,8 +38,7 @@ angular.module('nemtu', [
   // 3rd party
   uiRouter,
   firebase,
-  // TODO(vucalur): find alternative to angular-material-icons
-  // ngMdIcons,
+  ngMdIcons,
 
   // nemtu
   AccountModule.name,

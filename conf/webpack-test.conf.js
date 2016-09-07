@@ -27,11 +27,6 @@ module.exports = {
         test: /\.js$/,
         exclude: /(node_modules|.*\.spec\.js)/,
         loader: 'isparta'
-      },
-      // vucalur: make angular-material fonts load properly:
-      {
-        test: /\.(woff|woff2|eot|ttf|svg)$/,
-        loader: 'file-loader?limit=100000'
       }
     ]
   },

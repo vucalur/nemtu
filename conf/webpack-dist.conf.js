@@ -35,11 +35,6 @@ module.exports = {
           'ng-annotate',
           'babel'
         ]
-      },
-      // vucalur: make angular-material fonts load properly:
-      {
-        test: /\.(woff|woff2|eot|ttf|svg)$/,
-        loader: 'file-loader?limit=100000'
       }
     ]
   },
