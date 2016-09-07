@@ -38,14 +38,15 @@ boolean isChunked(response) {
 }
 
 void handleNormal(res, proxyRes) {
-  println("Got ${res.statusCode}. Proxying response")
+  println("Got ${res.statusCode}. Returning response")
   proxyRes.statusCode = res.statusCode
   proxyRes.headers.set(res.headers)
 
-  // turns out that rewriting headers above doesn't deal with chunked status on Vert.x side, hence:
-  if (isChunked(res)) {
-    proxyRes.chunked = true
-  }
+  // Rewriting headers does not set Content-Length, since length can only be known after reading data below.
+  // As a workaround, always send proxied response in chunked encoding.
+//  TODO(vucalur): Find a better way if migrating to Vertx 3
+  proxyRes.chunked = true
+
   res.dataHandler { buffer ->
     proxyRes << buffer
   }
