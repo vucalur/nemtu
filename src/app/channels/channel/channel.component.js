@@ -16,6 +16,10 @@ class DynamicArticles {
   }
 
   getItemAtIndex(index) {
+    if (this._mdVirtualRepeatGoesCrazy(index)) {
+      return;
+    }
+
     const article = this._fetched[index];
     if (!article) {
       this._fetchPage();
@@ -24,6 +28,12 @@ class DynamicArticles {
     } else {
       return this._fetched[index];
     }
+  }
+
+  _mdVirtualRepeatGoesCrazy(index) {
+    // … and queries indices greater than getLength() after length determined. Yup, that happens.
+    // TODO(vucalur): discus this craziness on GitHub
+    return this._allFetched() && index >= this._length;
   }
 
   _fetchInProgress(article) {
