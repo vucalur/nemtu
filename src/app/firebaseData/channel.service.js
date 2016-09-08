@@ -1,4 +1,3 @@
-import Paged from './paged';
 import angular from "angular";
 
 /**
@@ -6,17 +5,16 @@ import angular from "angular";
  * and to manage pagination cursors' states as well.
  */
 class Channel_ScopePrototype {
-  constructor(Root, $log, $q, uid, channelId) {
-    this.Root = Root;
+  constructor($log, $q, Paged, Root, uid, channelId) {
     this.$log = $log;
     this.$q = $q;
     this.uid = uid;
     this.channelId = channelId;
-    this._ref = this.Root.ucArticles.child(this.uid).child(this.channelId);
+    this._ref = Root.ucArticles.child(this.uid).child(this.channelId);
     this._readRef = this._ref.child('read');
     this._unreadRef = this._ref.child('unread');
-    this._readPaged = new Paged(this._readRef);
-    this._unreadPaged = new Paged(this._unreadRef);
+    this._readPaged = Paged.createInstance(this._readRef);
+    this._unreadPaged = Paged.createInstance(this._unreadRef);
   }
 
   unreadNextPage() {
@@ -87,10 +85,10 @@ class Channel_ScopePrototype {
 }
 
 export default class Channel {
-  constructor(Root, $log, $q) {
+  constructor($log, $q, Paged, Root) {
     'ngInject';
     this.createInstance = (uid, channelId) =>
-      new Channel_ScopePrototype(Root, $log, $q, uid, channelId);
+      new Channel_ScopePrototype($log, $q, Paged, Root, uid, channelId);
   }
 }
 

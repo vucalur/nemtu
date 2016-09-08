@@ -12,6 +12,7 @@ import {config} from './config';
 import {routesConfig, authRequiredRedirect} from './routes';
 import navbar from './app/navbar/component';
 
+import Paged from "./app/firebaseData/paged";
 import Root from './app/firebaseData/root.service';
 import Engines from "./app/firebaseData/engines.serivce";
 import Channels from "./app/firebaseData/channels.service";
@@ -49,6 +50,7 @@ angular.module('nemtu', [
   .config(routesConfig)
   .run(authRequiredRedirect)
   .component('nmtNavbar', navbar)
+  .service('Paged', Paged)
   .service('Root', Root)
   .service('Engines', Engines)
   .service('Channels', Channels)
