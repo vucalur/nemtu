@@ -70,7 +70,7 @@ class Channel_ScopePrototype {
   }
 
   addUnread(articles) {
-    this._unreadPaged.addOmitPagination(...articles);
+    return this._unreadPaged.addOmitPagination(...articles);
   }
 
   markAsRead(article) {

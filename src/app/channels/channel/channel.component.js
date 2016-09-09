@@ -1,5 +1,6 @@
 import angular from "angular";
 
+// TODO(vucalur): Tests :)
 class DynamicArticles {
   constructor($log, ChannelInstance) {
     this.$log = $log;
@@ -68,8 +69,12 @@ class DynamicArticles {
   }
 
   _addPage(page, isRead) {
-    const pageWithStatus = page.map(article => ({data: article, isRead: isRead}));
-    this._fetched.push(...pageWithStatus);
+    const articlesWithStatus = this._articlesWithStatus(page, isRead);
+    this._fetched.push(...articlesWithStatus);
+  }
+
+  _articlesWithStatus(page, isRead) {
+    return page.map(article => ({data: article, isRead: isRead}));
   }
 
   _pageNotFull(page) {
@@ -125,6 +130,14 @@ class DynamicArticles {
       this.ChannelInstance.markAsRead(article.data);
     }
   }
+
+  /**
+   * safety guaranteed by single-threaded browser's JS execution model
+   */
+  addOnTop(articles) {
+    const articlesWithStatus = this._articlesWithStatus(articles, false);
+    this._fetched.unshift(...articlesWithStatus);
+  }
 }
 
 class ChannelController {
@@ -148,11 +161,13 @@ class ChannelController {
 
   fetch() {
     const channel = this.ChannelInstance;
+    const da = this.dynamicArticles;
 
     // TODO(vucalur): Not liking this bind() mess. Why ES6's "filterOnlyNew = articles => {" ain't compiling ?!
     this.CrawlerInstance.fetchArticles()
       .then(angular.bind(channel, channel.filterOnlyNew))
-      .then(angular.bind(channel, channel.addUnread));
+      .then(angular.bind(channel, channel.addUnread))
+      .then(angular.bind(da, da.addOnTop));
   }
 }
 

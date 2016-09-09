@@ -32,8 +32,28 @@ class Paged_ScopePrototype {
    * new items added with this method won't affect pagination, won't be included in results - see _setSentinel()
    */
   addOmitPagination(...items) {
-    items.map(item => Paged_ScopePrototype._stripKey(item))
-      .forEach(item => this._ref.push(item));
+    const waitFor = [];
+
+    const result = items.map(item => {
+      Paged_ScopePrototype._stripKey(item);
+      const newRefAndPromise = this._ref.push(item);
+      waitFor.push(newRefAndPromise); // as a promise
+      return Paged_ScopePrototype._itemWithKey1(item, newRefAndPromise.key);  // as a ref
+    });
+
+    return this.$q.all(waitFor)
+      .then(() => result);
+  }
+
+  // method overload
+  static _itemWithKey1(item, key) {
+    item.$key = key;  // analogous to angularfire's $id
+    return item;
+  }
+
+  // method overload
+  static _itemWithKey2(snap) {
+    return Paged_ScopePrototype._itemWithKey1(snap.val(), snap.key);
   }
 
   static _stripKey(item) {
@@ -55,18 +75,12 @@ class Paged_ScopePrototype {
       .then(snap => {
         const page = [];
         snap.forEach(child => {
-          page.push(Paged_ScopePrototype._itemWithKey(child));
+          page.push(Paged_ScopePrototype._itemWithKey2(child));
         });
         page.reverse();  // apply from latest to oldest order
         this._handleCursor(page);
         return page;
       });
-  }
-
-  static _itemWithKey(snap) {
-    const item = snap.val();
-    item.$key = snap.key;  // analogous to angularfire's $id
-    return item;
   }
 
   _handleCursor(page) {
