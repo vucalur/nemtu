@@ -7,11 +7,10 @@ class DynamicArticles {
     this._PAGE_SIZE = 50;
     // TODO(vucalur): better way. Static const ?
     this._FETCH_IN_PROGRESS = 1234; // marker - dummy value
-    this._LENGTH_UNKNOWN = -1; // must be negative
     this._VIEW_SIZE_IN_ARTICLES = 5;
-    this._length = this._LENGTH_UNKNOWN;
     this.ChannelInstance = ChannelInstance;
     this._allUnreadFetched = false;
+    this._allFetched = false;
     this._fetched = [];
   }
 
@@ -33,7 +32,7 @@ class DynamicArticles {
   _mdVirtualRepeatGoesCrazy(index) {
     // … and queries indices greater than getLength() after length determined. Yup, that happens.
     // TODO(vucalur): discus this craziness on GitHub
-    return this._allFetched() && index >= this._length;
+    return this._allFetched && index >= this._fetched.length;
   }
 
   _fetchInProgress(article) {
@@ -47,6 +46,7 @@ class DynamicArticles {
       this._addFIPMarkers();
       this.ChannelInstance.unreadNextPage().then(page => {
         this._removeFIPMarkers();
+        // TODO(vucalur): named arguments ES6
         this._addPage(page, false);
         if (this._pageNotFull(page)) {
           this._allUnreadFetched = true;
@@ -80,34 +80,27 @@ class DynamicArticles {
     this._addFIPMarkers();
     this.ChannelInstance.readNextPage().then(page => {
       this._removeFIPMarkers();
+      // TODO(vucalur): named arguments ES6
       this._addPage(page, true);
       if (this._pageNotFull(page)) {
-        this._markAllFetched();
+        this._allFetched = true;
       }
     });
   }
 
   getLength() {
-    if (this._allFetched()) {
-      return this._length;
+    if (this._allFetched) {
+      return this._fetched.length;
     } else {
       return 50000; // arbitrarily large number
     }
-  }
-
-  _allFetched() {
-    return this._length !== this._LENGTH_UNKNOWN;
-  }
-
-  _markAllFetched() {
-    this._length = this._fetched.length;
   }
 
   markRead(index) {
     if (this._fetched.length < index) { // shouldn't ever happen, but just in case
       return;
     }
-    if (this._allFetched() && this._hasScrolledToTheBottom(index)) {
+    if (this._allFetched && this._hasScrolledToTheBottom(index)) {
       this._markAsReadAllRemainingUnread(index);
     } else {
       this._markAsReadSingleUnread(index);
@@ -116,11 +109,11 @@ class DynamicArticles {
 
   _hasScrolledToTheBottom(index) {
     index++;  // mdVirtualRepeat tends to sent decremented indices - crazy
-    return this._length - index <= this._VIEW_SIZE_IN_ARTICLES;
+    return this._fetched.length - index <= this._VIEW_SIZE_IN_ARTICLES;
   }
 
   _markAsReadAllRemainingUnread(index) {
-    for (let i = index; i < this._length; i++) {
+    for (let i = index; i < this._fetched.length; i++) {
       this._markAsReadSingleUnread(i);
     }
   }
@@ -154,12 +147,12 @@ class ChannelController {
   }
 
   fetch() {
-    const chi = this.ChannelInstance;
+    const channel = this.ChannelInstance;
 
-    // TODO(vucalur): Not liking this bind() mess. Why "filterOnlyNew = articles => {" ain't working ?!
+    // TODO(vucalur): Not liking this bind() mess. Why ES6's "filterOnlyNew = articles => {" ain't compiling ?!
     this.CrawlerInstance.fetchArticles()
-      .then(angular.bind(chi, chi.filterOnlyNew))
-      .then(angular.bind(chi, chi.addUnread));
+      .then(angular.bind(channel, channel.filterOnlyNew))
+      .then(angular.bind(channel, channel.addUnread));
   }
 }
 
