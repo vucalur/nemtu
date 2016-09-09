@@ -12,6 +12,7 @@
     <div class="md-list-item-text" layout="column">
       <h3>{{ article.data.title }}</h3>
       <h4>{{ article.data.price }}</h4>
+      <p>{{article.data.datetimeScraped | date:'short'}}</p>
     </div>
   </md-list-item>
 </md-virtual-repeat-container>

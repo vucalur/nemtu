@@ -166,7 +166,7 @@ class ChannelController {
     // TODO(vucalur): Not liking this bind() mess. Why ES6's "filterOnlyNew = articles => {" ain't compiling ?!
     this.CrawlerInstance.fetchArticles()
       .then(angular.bind(channel, channel.filterOnlyNew))
-      .then(angular.bind(channel, channel.addUnread))
+      .then(angular.bind(channel, channel.addScraped))
       .then(angular.bind(da, da.addOnTop));
   }
 }

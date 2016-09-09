@@ -69,7 +69,8 @@ class Channel_ScopePrototype {
     return this.$q.all(waitFor);
   }
 
-  addUnread(articles) {
+  addScraped(articles) {
+    Channel_ScopePrototype._setDatetimeScraped(articles);
     return this._unreadPaged.addOmitPagination(...articles);
   }
 
@@ -81,6 +82,13 @@ class Channel_ScopePrototype {
 
   _removeUnread(article) {
     this._unreadRef.child(article.$key).remove();
+  }
+
+  static _setDatetimeScraped(articles) {
+    const datetimeScraped = Date.now();
+    articles.forEach(article => {
+      article.datetimeScraped = datetimeScraped;
+    });
   }
 }
 
