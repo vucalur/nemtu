@@ -2,7 +2,6 @@ import angular from 'angular';
 import ngAnimate from 'angular-animate';
 import ngCookies from 'angular-cookies';
 import ngResource from 'angular-resource';
-import ngSanitize from 'angular-sanitize';
 import uiRouter from 'angular-ui-router';
 import firebase from 'angularfire';
 import ngMaterial from 'angular-material';
@@ -33,7 +32,6 @@ angular.module('nemtu', [
   ngMaterial,
   ngAnimate,
   ngCookies,
-  ngSanitize,
   ngResource,
 
   // 3rd party

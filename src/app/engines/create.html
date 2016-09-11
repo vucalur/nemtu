@@ -36,11 +36,56 @@
             <label>image URL</label>
             <input ng-model="vm.engine.article.imgUrlSel">
           </md-input-container>
-          <md-input-container class="md-block">
-            <label>price</label>
-            <input ng-model="vm.engine.article.priceSel">
-          </md-input-container>
+          <fieldset>
+            <legend>Custom article data selectors</legend>
+
+            <div ng-repeat="(fieldIndex, field) in vm.engine.article.customFields">
+              <div style="position: relative">
+                <md-fab-speed-dial md-direction="left" class="md-scale md-fab-top-right" md-open="isOpen"
+                                   ng-mouseenter="isOpen=true" ng-mouseleave="isOpen=false">
+                  <md-fab-trigger>
+                    <md-button aria-label="menu" class="md-fab md-warn">
+                      <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                  </md-fab-trigger>
+
+                  <md-fab-actions>
+                    <div ng-repeat="action in vm.customFieldActions">
+                      <md-button aria-label="{{action.name}}" class="md-fab md-raised md-mini"
+                                 ng-click="vm.performCustomFieldAction(action.id, fieldIndex)">
+                        <md-tooltip>{{action.name}}</md-tooltip>
+                        <ng-md-icon icon="{{action.icon}}"></ng-md-icon>
+                      </md-button>
+                    </div>
+                  </md-fab-actions>
+                </md-fab-speed-dial>
+              </div>
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Field label</label>
+                  <input ng-model="field.label">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Data type</label>
+                  <md-select ng-model="field.type">
+                    <md-option ng-repeat="type in vm.customFieldTypes" value="{{type}}">
+                      {{type}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+              </div>
+              <md-input-container class="md-block">
+                <label>Selector</label>
+                <input ng-model="field.selector">
+              </md-input-container>
+            </div>
+            <md-button class="md-raised md-primary" ng-click="vm.addCustomField()">
+              <ng-md-icon icon="add"></ng-md-icon>
+              Add field
+            </md-button>
+          </fieldset>
         </fieldset>
+
         <md-switch ng-model="vm.engine.pagination.active" aria-label="Can search results come in pages ?">
           Can search results come in pages ?
         </md-switch>

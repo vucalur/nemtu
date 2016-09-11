@@ -8,7 +8,6 @@ class DynamicArticles {
     this._PAGE_SIZE = 50;
     // TODO(vucalur): better way. Static const ?
     this._FETCH_IN_PROGRESS = 1234; // marker - dummy value
-    this._VIEW_SIZE_IN_ARTICLES = 5;
     this.ChannelInstance = ChannelInstance;
     this._allUnreadFetched = false;
     this._allFetched = false;
@@ -105,22 +104,7 @@ class DynamicArticles {
     if (this._fetched.length < index) { // shouldn't ever happen, but just in case
       return;
     }
-    if (this._allFetched && this._hasScrolledToTheBottom(index)) {
-      this._markAsReadAllRemainingUnread(index);
-    } else {
-      this._markAsReadSingleUnread(index);
-    }
-  }
-
-  _hasScrolledToTheBottom(index) {
-    index++;  // mdVirtualRepeat tends to sent decremented indices - crazy
-    return this._fetched.length - index <= this._VIEW_SIZE_IN_ARTICLES;
-  }
-
-  _markAsReadAllRemainingUnread(index) {
-    for (let i = index; i < this._fetched.length; i++) {
-      this._markAsReadSingleUnread(i);
-    }
+    this._markAsReadSingleUnread(index);
   }
 
   _markAsReadSingleUnread(index) {

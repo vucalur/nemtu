@@ -1,18 +1,45 @@
-<h4>{{vm.channel.name}}</h4>
+<dic layout="row">
+  <h4>{{ vm.channel.name }}</h4>
 
-<md-button ng-click="vm.fetch()" class="md-primary md-raised">Fetch new articles</md-button>
+  <md-button ng-click="vm.fetch()" class="md-primary">
+    <ng-md-icon icon="cloud_download"></ng-md-icon>
+    Fetch new articles
+  </md-button>
+</dic>
 
-<md-subheader class="md-no-sticky">Fetched articles:</md-subheader>
 <md-virtual-repeat-container id="dynamicArticlesContainer" md-top-index="vm.topIndex">
-  <md-list-item id="article" class="md-3-line"
-                md-virtual-repeat="article in vm.dynamicArticles" md-on-demand
-                ng-href="{{article.data.url}}" target="_blank"
-                ng-class="article.isRead ? 'read' : 'unread'">
-    <img ng-src="{{article.data.imgUrl}}" class="md-avatar" alt="{{article.data.title}}"/>
-    <div class="md-list-item-text" layout="column">
-      <h3>{{ article.data.title }}</h3>
-      <h4>{{ article.data.price }}</h4>
-      <p>{{article.data.datetimeScraped | date:'short'}}</p>
-    </div>
-  </md-list-item>
+  <md-card md-virtual-repeat="article in vm.dynamicArticles" md-on-demand
+           id="article" class="md-3-line"
+           md-theme="{{ article.isRead ? 'default' : 'unread' }}" md-theme-watch>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline nmt-headline">
+          <a ng-href="{{ article.data.url }}" target="_blank">
+            {{ article.data.title }}
+          </a>
+        </span>
+        <span class="md-subhead">{{ article.data.datetimeScraped | date:'short' }}</span>
+      </md-card-title-text>
+      <md-card-title-media ng-if="article.data.imgUrl">
+        <a ng-href="{{ article.data.url }}" target="_blank">
+          <div class="md-media-md card-media">
+            <img ng-src="{{ article.data.imgUrl }}" alt="{{ article.data.title }}"/>
+          </div>
+        </a>
+      </md-card-title-media>
+    </md-card-title>
+
+    <md-card-content>
+      <div class="nmt-customField" ng-repeat="field in vm.engine.article.customFields">
+        <div ng-if="field.type === 'text'">
+          <span class="fieldLabel">{{ field.label }}:</span>
+          <span>{{ article.data.customFieldsValues[field.label] }}</span>
+        </div>
+        <div ng-if="field.type === 'html'">
+          <div class="fieldLabel">{{ field.label }}:</div>
+          <span ng-bind-html="article.data.customFieldsValues[field.label]"></span>
+        </div>
+      </div>
+    </md-card-content>
+  </md-card>
 </md-virtual-repeat-container>

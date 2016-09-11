@@ -20,7 +20,7 @@ export default class CreateController {
 
   save() {
     if (this._originalChannel) {
-      // unable to hide() with this.channel, since angular.copy() has omitted important fields
+      // unable to hide() with this.channel, since angular.copy() has omitted important angular's properties (e.g. $$hash)
       this._applyEditsOnOriginal();
       this.$mdDialog.hide(this._originalChannel);
     } else {

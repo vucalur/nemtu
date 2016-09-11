@@ -39,7 +39,7 @@ class Crawler_ScopePrototype {
   _handleSinglePage() {
     return this._fetchHtml(this._url)
       .then(rawHtml => {
-        const articles = this.Parser.prepareDocument(rawHtml, this._engine).parseArticles();
+        const articles = this.Parser.prepareDocument(rawHtml, this._engine).scrapArticles();
         this._makeUrlsAbsolute(articles, this._url);
         return articles;
       });
@@ -66,9 +66,9 @@ class Crawler_ScopePrototype {
 
     return this._fetchHtml(url)
       .then(rawHtml => {
-        const newArticles = this.Parser.prepareDocument(rawHtml, this._engine).parseArticles();
+        const newArticles = this.Parser.prepareDocument(rawHtml, this._engine).scrapArticles();
         if (this._pageEmpty(newArticles)) {
-          this.$log.info(`Total of ${articlesAccum.length} articles crawled.`);
+          this.$log.info(`Total of ${articlesAccum.length} articles scraped.`);
           return articlesAccum;
         } else {
           this._makeUrlsAbsolute(newArticles, url);
@@ -99,13 +99,13 @@ class Crawler_ScopePrototype {
     return this._fetchHtml(url)
       .then(rawHtml => {
         const doc = this.Parser.prepareDocument(rawHtml, this._engine);
-        const newArticles = doc.parseArticles();
+        const newArticles = doc.scrapArticles();
         this._makeUrlsAbsolute(newArticles, url);
-        let nextUrl = doc.parseLinkToNextPage();
+        let nextUrl = doc.scrapLinkToNextPage();
         nextUrl = this._absoluteUrl(nextUrl, url);
         articlesAccum.push(...newArticles);
         if (this._pageEmpty(newArticles) || !this._isValid(nextUrl)) {
-          this.$log.info(`Total of ${articlesAccum.length} articles crawled.`);
+          this.$log.info(`Total of ${articlesAccum.length} articles scraped.`);
           return articlesAccum;
         } else {
           return this._crawlByLink(nextUrl, articlesAccum);
