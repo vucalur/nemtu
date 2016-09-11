@@ -60,7 +60,7 @@ void doProxy(java.net.URL url, proxyRes) {
   println("Proxying request: ${url}")
 
   def port = effectivePort(url)
-  def client = vertx.createHttpClient(port: port, host: url.host)
+  def client = createClientForProtocol(url.getProtocol(), port, url)
   client.getNow(url.getFile()) { res ->
     int statusCode = res.statusCode
     if (isRedirect(statusCode)) {
@@ -68,6 +68,22 @@ void doProxy(java.net.URL url, proxyRes) {
     } else {
       handleNormal(res, proxyRes)
     }
+  }
+}
+
+org.vertx.groovy.core.http.HttpClient createClientForProtocol(String protocol, Integer port, java.net.URL url) {
+  if (protocol == 'http') {
+    return vertx.createHttpClient(
+      port: port,
+      host: url.host)
+  } else if (protocol == 'https') {
+    return vertx.createHttpClient(
+      SSL: true,
+      trustAll: true,
+      port: port,
+      host: url.host)
+  } else {
+    throw new IllegalArgumentException("Unsupported protocol: ${protocol}")
   }
 }
 
