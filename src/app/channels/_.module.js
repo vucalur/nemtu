@@ -26,6 +26,7 @@ export default angular.module('nemtu.channels', [
 ;
 
 function themes($mdThemingProvider) {
+  'ngInject';
   $mdThemingProvider.theme('unread')
     .backgroundPalette('light-blue');
 }
