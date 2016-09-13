@@ -1,4 +1,5 @@
 import angular from "angular";
+import {pluralOrSingular} from "../../utils";
 
 // TODO(vucalur): Tests :)
 class DynamicArticles {
@@ -121,13 +122,15 @@ class DynamicArticles {
   addOnTop(articles) {
     const articlesWithStatus = this._articlesWithStatus(articles, false);
     this._fetched.unshift(...articlesWithStatus);
+    return articles;
   }
 }
 
 class ChannelController {
-  constructor($log, $scope, Engines, Channel, Crawler) {
+  constructor($log, $scope, $mdToast, Engines, Channel, Crawler) {
     'ngInject';
 
+    this.$mdToast = $mdToast;
     this.engine = Engines.getEngine(this.user.uid, this.channel.engine_id);
     // danger: Passing engine, which may not have been resolved from firebase yet.
     // Here works, since the only work being done is saving the reference for later use
@@ -151,7 +154,48 @@ class ChannelController {
     this.CrawlerInstance.fetchArticles()
       .then(angular.bind(channel, channel.filterOnlyNew))
       .then(angular.bind(channel, channel.addScraped))
-      .then(angular.bind(da, da.addOnTop));
+      .then(angular.bind(da, da.addOnTop))
+      .then(angular.bind(this, this._showFetchCompleteToast));
+  }
+
+  _showFetchCompleteToast(articles) {
+    const fetchedCount = articles.length;
+    if (fetchedCount === 0) {
+      this._showNoneFetchedToast();
+    } else {
+      this._showFetchedToast(fetchedCount);
+    }
+  }
+
+  _showNoneFetchedToast() {
+    const toast = this._toastCommon()
+      .textContent('No new articles found');
+    this.$mdToast.show(toast);
+  }
+
+  _toastCommon() {
+    const toast = this.$mdToast.simple()
+      .position('bottom right')
+      .hideDelay(3500);
+    return toast;
+  }
+
+  _showFetchedToast(fetchedCount) {
+    const toast = this._toastCommon()
+      .textContent(`${fetchedCount} new article${pluralOrSingular(fetchedCount)} fetched`)
+      .action('Scroll the view to the top')
+      .highlightAction(true)
+      .highlightClass('nmt-toast-action');
+
+    this.$mdToast.show(toast).then(response => {
+      if (this._toastActionClicked(response)) {
+        this.topIndex = 0;
+      }
+    });
+  }
+
+  _toastActionClicked(response) {
+    return response === 'ok';
   }
 }
 

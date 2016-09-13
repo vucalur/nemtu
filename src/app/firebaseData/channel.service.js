@@ -1,4 +1,5 @@
 import angular from "angular";
+import {pluralOrSingular} from "../utils";
 
 /**
  * Separate service instance for each channel, to avoid constant passing (uid, channelId) in call hierarchy
@@ -33,7 +34,7 @@ class Channel_ScopePrototype {
       .then(() => this._filterOut(this._unreadRef, mapId2Article))
       .then(() => {
         const onlyNewArticles = this._extractArticles(mapId2Article);
-        this.$log.info(`After filtering out articles fetched earlier, ${onlyNewArticles.length} article${onlyNewArticles.length === 1 ? '' : 's'} left`);
+        this.$log.info(`After filtering out articles fetched earlier, ${onlyNewArticles.length} article${pluralOrSingular(onlyNewArticles)} left`);
         return onlyNewArticles;
       });
   }
