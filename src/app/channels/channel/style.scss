@@ -7,11 +7,6 @@ md-virtual-repeat-container#dynamicArticlesContainer {
   .nmt-headline {
     font-size: 17px;
     font-weight: bold;
-
-    a {
-      text-decoration: initial;
-      color: black;
-    }
   }
 
   .nmt-customField {
@@ -19,6 +14,11 @@ md-virtual-repeat-container#dynamicArticlesContainer {
       color: rgba(114, 114, 114, 0.91);
     }
   }
+}
+
+a.nmt-no-link-styles {
+  text-decoration: initial;
+  color: black;
 }
 
 .nmt-toast-action {

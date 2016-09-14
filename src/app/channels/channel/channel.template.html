@@ -1,5 +1,9 @@
 <dic layout="row">
-  <h4>{{ vm.channel.name }}</h4>
+  <h4>
+    <a ng-href="{{ vm.channel.url }}" class="nmt-no-link-styles" target="_blank">
+      {{ vm.channel.name }}
+    </a>
+  </h4>
 
   <md-button ng-click="vm.fetch()" class="md-primary">
     <ng-md-icon icon="cloud_download"></ng-md-icon>
@@ -14,7 +18,8 @@
     <md-card-title>
       <md-card-title-text>
         <span class="md-headline nmt-headline">
-          <a ng-href="{{ article.data.url }}" target="_blank">
+          <a ng-href="{{ article.data.url }}" target="_blank"
+             class="nmt-no-link-styles">
             {{ article.data.title }}
           </a>
         </span>
