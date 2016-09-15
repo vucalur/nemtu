@@ -26,7 +26,7 @@ class Channel_ScopePrototype {
     return this._readPaged.getNextPage();
   }
 
-  // TODO(vucalur): Why "filterOnlyNew = articles => {" ain't working ?!
+  // TODO(vucalur): Why "filterOnlyNew = articles => {" ain't compiling ?!
   filterOnlyNew(articles) {
     const mapId2Article = this._mapId2Article(articles);
 
@@ -58,6 +58,7 @@ class Channel_ScopePrototype {
     const waitFor = [];
     const ids = Object.keys(mapId2Article);
     ids.forEach(id => {
+      // TODO(vucalur): Magic number (listingId). ES6 Enums? http://exploringjs.com/es6/ch_symbols.html ?
       const singleFilteringDone = ref.orderByChild('listingId').equalTo(id).once('value')
         .then(snap => {
           if (snap.exists()) {
@@ -72,13 +73,13 @@ class Channel_ScopePrototype {
 
   addScraped(articles) {
     Channel_ScopePrototype._setDatetimeScraped(articles);
-    return this._unreadPaged.addOmitPagination(...articles);
+    return this._unreadPaged.addOmittingPagination(...articles);
   }
 
   markAsRead(article) {
     // removal will not affect pagination since article has already been fetched if this method is invoked
     this._removeUnread(article);
-    this._readPaged.addOmitPagination(article);
+    this._readPaged.addOmittingPagination(article);
   }
 
   _removeUnread(article) {

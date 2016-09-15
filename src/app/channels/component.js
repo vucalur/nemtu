@@ -50,7 +50,8 @@ class ChannelsController {
   remove(ev, channelToRemove) {
     const confirm = this.$mdDialog.confirm()
       .title(`Would you like to remove "${channelToRemove.name}" channel?`)
-      .textContent('Removing the channel will also remove its all posts')
+      .textContent('Removing the channel will also remove its all articles')
+      // TODO(vucalur): remove those articles then :)
       .ariaLabel('Channel removal')
       .targetEvent(ev)
       .ok('Yes, Remove')

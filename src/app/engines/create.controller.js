@@ -7,7 +7,9 @@ export default class CreateController {
     this.$mdDialog = $mdDialog;
     this.engine = this._createWorkingDraft(engineToEdit);
     this._originalEngine = engineToEdit;
+    // TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?
     this.customFieldTypes = ['text', 'html'];
+    // TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?
     this.customFieldActions = [
       {name: 'Delete', icon: 'clear', id: 'delete'},
       {name: 'Move up', icon: 'arrow_upwards', id: 'move_up'},
@@ -30,6 +32,7 @@ export default class CreateController {
     const engine = {
       article: {
         customFields: [
+          // TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?
           {label: 'price', type: 'text', selector: '<<price_sel>>'},
           {label: 'description', type: 'html', selector: '<<desc_sel>>'}
         ]
@@ -42,6 +45,7 @@ export default class CreateController {
   }
 
   performCustomFieldAction(actionId, fieldIndex) {
+    // TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?
     switch (actionId) {
       case 'delete':
         this._customFields.splice(fieldIndex, 1);
@@ -88,6 +92,7 @@ export default class CreateController {
     const pagination = engine.pagination;
     if (pagination.active) {
       switch (pagination.type) {
+        // TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?
         case 'query':
           delete pagination.linkToNext;
           break;
@@ -98,6 +103,7 @@ export default class CreateController {
       }
     } else {
       delete pagination.type;
+        // TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?
       delete pagination.linkToNext;
       delete pagination.query;
     }

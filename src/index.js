@@ -11,7 +11,7 @@ import {config} from './config';
 import {routesConfig, authRequiredRedirect} from './routes';
 import navbar from './app/navbar/component';
 
-import Paged from "./app/firebaseData/paged";
+import Paged from "./app/firebaseData/paged.service";
 import Root from './app/firebaseData/root.service';
 import Engines from "./app/firebaseData/engines.serivce";
 import Channels from "./app/firebaseData/channels.service";

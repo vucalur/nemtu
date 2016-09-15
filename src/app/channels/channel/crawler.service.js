@@ -46,6 +46,7 @@ class Crawler_ScopePrototype {
   }
 
   _handlePagination() {
+    // TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?
     switch (this._engine.pagination.type) {
       case 'query':
         return this._handlePaginationQuery();
@@ -114,17 +115,19 @@ class Crawler_ScopePrototype {
   }
 
   _isValid(urlString) {
-    if (!urlString) {
-      return false;
-    }
+    return urlString && this._isHttpOrHttps(urlString);
+  }
+
+  _isHttpOrHttps(urlString) {
     const url = new URL(urlString);
     const protocol = url.protocol;
-    const valid = protocol === 'http:' || protocol === 'https:';
-    return valid;
+    return protocol === 'http:' || protocol === 'https:';
   }
 
   _makeUrlsAbsolute(articles, baseUrl) {
     articles.forEach(article => {
+      // TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?
+      // TODO(vucalur): Maybe add global ES module with Engine & Article models with these defined as constants ?
       for (const prop of ['url', 'imgUrl']) {
         article[prop] = this._absoluteUrl(article[prop], baseUrl);
       }

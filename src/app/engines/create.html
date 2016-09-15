@@ -92,6 +92,7 @@
         <fieldset ng-show="vm.engine.pagination.active">
           <legend>Pagination support</legend>
 
+          <!--TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?-->
           <md-radio-group ng-model="vm.engine.pagination.type">
             <md-radio-button value="query">pagination by URL query param<br/>
               <span class="desc">

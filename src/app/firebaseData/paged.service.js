@@ -1,9 +1,10 @@
 class Paged_ScopePrototype {
   /**
-   * @param ref Cannot not point to an empty collection. Otherwise API will work correctly,
+   * @param ref Cannot point to an empty collection. Otherwise API will not work correctly,
    * unless collection is never appended any new items:
-   * Empty collection's getNextPage() calls will include items added with addOmitPagination(),
-   * since sentinel
+   * Empty collection's getNextPage() calls will include items added with addOmittingPagination(),
+   * since sentinel was not set for empty collection
+   * TODO(vucalur): Cease this bullshit. Add checking if collection was empty on init.
    */
   constructor($q, ref) {
     this.$q = $q;
@@ -21,7 +22,7 @@ class Paged_ScopePrototype {
    */
   _setSentinel() {
     // FIXME(vucalur): wait for the promise to resolve - cursor may be null if getNextPage() invoked right after init
-    // FIXME(vucalur): …and Firebase does not process quieries in the order of submission
+    // FIXME(vucalur): …and Firebase does not process queries in the order of submission
     const ref = this._refOrdr.limitToLast(1);
     ref.once('child_added').then(snap => {
       this._cursor = snap.key;
@@ -31,7 +32,7 @@ class Paged_ScopePrototype {
   /**
    * new items added with this method won't affect pagination, won't be included in results - see _setSentinel()
    */
-  addOmitPagination(...items) {
+  addOmittingPagination(...items) {
     const waitFor = [];
 
     const result = items.map(item => {
@@ -114,6 +115,9 @@ class Paged_ScopePrototype {
   }
 }
 
+/**
+ * Totally doesn't fit service semantics. Making it one only because I need those deps injected by angular.
+ */
 export default class Paged {
   constructor($q) {
     'ngInject';

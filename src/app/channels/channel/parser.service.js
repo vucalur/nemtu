@@ -25,11 +25,10 @@ class ParsedDocument {
   }
 
   _scrapFixedFields(articleDoc) {
-    // TODO(vucalur): sanitize engine model instead of "|| null"
-    const listingId = this._doc.evaluate(this._engine.article.listingIdSel || null, articleDoc, null, XPathResult.STRING_TYPE, null);
-    const title = this._doc.evaluate(this._engine.article.titleSel || null, articleDoc, null, XPathResult.STRING_TYPE, null);
-    const url = this._doc.evaluate(this._engine.article.urlSel || null, articleDoc, null, XPathResult.STRING_TYPE, null);
-    const imgUrl = this._doc.evaluate(this._engine.article.imgUrlSel || null, articleDoc, null, XPathResult.STRING_TYPE, null);
+    const listingId = this._evaluate(this._engine.article.listingIdSel, articleDoc);
+    const title = this._evaluate(this._engine.article.titleSel, articleDoc);
+    const url = this._evaluate(this._engine.article.urlSel, articleDoc);
+    const imgUrl = this._evaluate(this._engine.article.imgUrlSel, articleDoc);
     return {
       listingId: listingId.stringValue,
       title: title.stringValue,
@@ -38,11 +37,15 @@ class ParsedDocument {
     };
   }
 
+  _evaluate(selector, articleDoc) {
+    // TODO(vucalur): validate engine model instead of "|| null"
+    return this._doc.evaluate(selector || null, articleDoc, null, XPathResult.STRING_TYPE, null);
+  }
+
   _scrapCustomFields(articleDoc) {
     const scrapedValues = {};
     this._engine.article.customFields.forEach(field => {
-      // TODO(vucalur): sanitize engine model instead of "|| null"
-      const scrapedValue = this._doc.evaluate(field.selector || null, articleDoc, null, XPathResult.STRING_TYPE, null);
+      const scrapedValue = this._evaluate(field.selector, articleDoc);
       // TODO(vucalur): label may not be a good choice for a key.
       scrapedValues[field.label] = scrapedValue.stringValue;
     });
@@ -54,7 +57,7 @@ class ParsedDocument {
 
   scrapLinkToNextPage() {
     const linkToNextSel = this._engine.pagination.linkToNext.sel;
-    const link = this._doc.evaluate(linkToNextSel, this._doc, null, XPathResult.STRING_TYPE, null);
+    const link = this._evaluate(linkToNextSel, this._doc);
     return link.stringValue;
   }
 }
