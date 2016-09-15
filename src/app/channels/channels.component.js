@@ -1,5 +1,5 @@
 import angular from 'angular';
-import CreateController from "./create.controller";
+import EditChannelController from "./editChannel.controller";
 
 class ChannelsController {
   constructor($document, $mdSidenav, $mdDialog, Channels) {
@@ -31,13 +31,13 @@ class ChannelsController {
 
   _showDialog(ev, channelToEdit) {
     const dialogProps = {
-      controller: CreateController,
+      controller: EditChannelController,
       controllerAs: 'vm',
       locals: {
         channelToEdit,
         uid: this.user.uid // TODO(vucalur): eliminate crazy uid passing. DI anyone ?
       },
-      templateUrl: 'app/channels/create.html',
+      templateUrl: 'app/channels/editChannel.template.html',
       parent: angular.element(this.$document.body),
       targetEvent: ev,
       escapeToClose: true
@@ -64,7 +64,7 @@ class ChannelsController {
 }
 
 export default {
-  templateUrl: 'app/channels/list.html',
+  templateUrl: 'app/channels/channels.component.html',
   controller: ChannelsController,
   controllerAs: 'vm',
   bindings: {

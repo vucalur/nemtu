@@ -1,3 +1,7 @@
+/**
+ * According to services naming convention, it should be named and registered to angular's DI
+ * as "Auth". Making it AuthService instead, to avoid confusion with Firebase's Auth
+ */
 export class AuthService {
   constructor($firebaseAuth) {
     'ngInject';

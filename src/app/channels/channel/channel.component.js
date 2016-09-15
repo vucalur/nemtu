@@ -77,7 +77,7 @@ class ChannelController {
 }
 
 export default {
-  templateUrl: 'app/channels/channel/channel.template.html',
+  templateUrl: 'app/channels/channel/channel.component.html',
   controller: ChannelController,
   controllerAs: 'vm',
   bindings: {

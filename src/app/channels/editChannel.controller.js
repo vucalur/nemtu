@@ -1,6 +1,6 @@
 import angular from "angular";
 
-export default class CreateController {
+export default class EditChannelController {
   constructor($mdDialog, Engines, channelToEdit, uid) {
     'ngInject';
 

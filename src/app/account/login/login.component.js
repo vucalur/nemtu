@@ -28,7 +28,7 @@ class LoginController {
 }
 
 export default {
-  templateUrl: 'app/account/login/login.html',
+  templateUrl: 'app/account/login/login.component.html',
   controller: LoginController,
   controllerAs: 'vm'
 };

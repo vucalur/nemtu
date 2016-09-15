@@ -1,7 +1,7 @@
 import angular from 'angular';
-import CreateController from './create.controller';
+import EditEngineController from './editEngine.controller';
 
-class ListController {
+class EnginesController {
   constructor($document, $mdDialog, Engines) {
     'ngInject';
 
@@ -26,10 +26,10 @@ class ListController {
 
   _engineDialog(ev, engineToEdit) {
     const dialogProps = {
-      controller: CreateController,
+      controller: EditEngineController,
       controllerAs: 'vm',
       locals: {engineToEdit},
-      templateUrl: 'app/engines/create.html',
+      templateUrl: 'app/engines/editEngine.template.html',
       parent: angular.element(this.$document.body),
       targetEvent: ev,
       clickOutsideToClose: false,
@@ -56,8 +56,8 @@ class ListController {
 }
 
 export default {
-  templateUrl: 'app/engines/list.html',
-  controller: ListController,
+  templateUrl: 'app/engines/engines.component.html',
+  controller: EnginesController,
   controllerAs: 'vm',
   bindings: {
     user: '<'

@@ -1,4 +1,4 @@
-<dic layout="row">
+<div layout="row">
   <h4>
     <a ng-href="{{ vm.channel.url }}" class="nmt-no-link-styles" target="_blank">
       {{ vm.channel.name }}
@@ -9,7 +9,7 @@
     <ng-md-icon icon="cloud_download"></ng-md-icon>
     Fetch new articles
   </md-button>
-</dic>
+</div>
 
 <md-virtual-repeat-container id="dynamicArticlesContainer" md-top-index="vm.topIndex">
   <md-card md-virtual-repeat="article in vm.dynamicArticles" md-on-demand

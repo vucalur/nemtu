@@ -7,9 +7,9 @@ import firebase from 'angularfire';
 import ngMaterial from 'angular-material';
 import ngMdIcons from 'angular-material-icons';
 
-import {config} from './config';
-import {routesConfig, authRequiredRedirect} from './routes';
-import navbar from './app/navbar/component';
+import {config} from './_.config';
+import {routesConfig, authRequiredRedirect} from './_.states';
+import navbar from './app/navbar/navbar.component';
 
 import Paged from "./app/firebaseData/paged.service";
 import Root from './app/firebaseData/root.service';
@@ -17,9 +17,9 @@ import Engines from "./app/firebaseData/engines.serivce";
 import Channels from "./app/firebaseData/channels.service";
 import Channel from "./app/firebaseData/channel.service";
 
-import AccountModule from './app/account/_.module';
-import EnginesModule from './app/engines/_.module';
-import ChannelsModule from './app/channels/_.module';
+import AccountModule from './app/account/_.ng-module';
+import EnginesModule from './app/engines/_.ng-module';
+import ChannelsModule from './app/channels/_.ng-module';
 
 // Material design css
 import 'angular-material/angular-material.css';

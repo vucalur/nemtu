@@ -4,8 +4,8 @@ import ngMaterial from 'angular-material';
 import firebase from 'angularfire';
 import ngMdIcons from 'angular-material-icons';
 
-import {routerConfig} from './_.route';
-import engines from './component';
+import {routerConfig} from './_.states';
+import engines from './engines.component';
 
 import './style.scss';
 

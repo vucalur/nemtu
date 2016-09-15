@@ -3,8 +3,8 @@ import ngSanitize from 'angular-sanitize';
 import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
 
-import {routerConfig} from './_.route';
-import channels from './component';
+import {routerConfig} from './_.states';
+import channels from './channels.component';
 import Crawler from './channel/crawler.service';
 import Parser from './channel/parser.service';
 import channel from './channel/channel.component';
