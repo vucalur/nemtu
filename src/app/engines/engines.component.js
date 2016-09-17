@@ -29,7 +29,7 @@ class EnginesController {
       controller: EditEngineController,
       controllerAs: 'vm',
       locals: {engineToEdit},
-      templateUrl: 'app/engines/editEngine.template.html',
+      template: require('./editEngine.template.html'),
       parent: angular.element(this.$document.body),
       targetEvent: ev,
       clickOutsideToClose: false,
@@ -56,7 +56,7 @@ class EnginesController {
 }
 
 export default {
-  templateUrl: 'app/engines/engines.component.html',
+  template: require('./engines.component.html'),
   controller: EnginesController,
   controllerAs: 'vm',
   bindings: {

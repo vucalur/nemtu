@@ -30,6 +30,12 @@ module.exports = {
           'ng-annotate',
           'babel'
         ]
+      },
+      {
+        test: /.html$/,
+        loaders: [
+          'html'
+        ]
       }
     ]
   },

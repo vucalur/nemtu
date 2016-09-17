@@ -1,5 +1,7 @@
+import angular from 'angular';
+
 export function pluralOrSingular(a) {
-  if (Array.isArray(a)) {
+  if (angular.isArray(a)) {
     return a.length === 1 ? '' : 's';
   } else {
     // assume it's a number

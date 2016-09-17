@@ -37,7 +37,7 @@ class ChannelsController {
         channelToEdit,
         uid: this.user.uid // TODO(vucalur): eliminate crazy uid passing. DI anyone ?
       },
-      templateUrl: 'app/channels/editChannel.template.html',
+      template: require('./editChannel.template.html'),
       parent: angular.element(this.$document.body),
       targetEvent: ev,
       escapeToClose: true
@@ -64,7 +64,7 @@ class ChannelsController {
 }
 
 export default {
-  templateUrl: 'app/channels/channels.component.html',
+  template: require('./channels.component.html'),
   controller: ChannelsController,
   controllerAs: 'vm',
   bindings: {
