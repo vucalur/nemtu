@@ -15,7 +15,7 @@ import Paged from "./app/firebaseData/paged.service";
 import Root from './app/firebaseData/root.service';
 import Engines from "./app/firebaseData/engines.serivce";
 import Channels from "./app/firebaseData/channels.service";
-import Channel from "./app/firebaseData/channel.service";
+import Articles from "./app/firebaseData/articles.service";
 
 import AccountModule from './app/account/_.ng-module';
 import EnginesModule from './app/engines/_.ng-module';
@@ -52,5 +52,5 @@ angular.module('nemtu', [
   .service('Root', Root)
   .service('Engines', Engines)
   .service('Channels', Channels)
-  .service('Channel', Channel)
+  .service('Articles', Articles)
 ;

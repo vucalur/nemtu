@@ -3,7 +3,7 @@ import DynamicArticles from "./dynamicArticles";
 import {pluralOrSingular} from "../../utils";
 
 class ChannelController {
-  constructor($log, $scope, $mdToast, Engines, Channel, Crawler) {
+  constructor($log, $scope, $mdToast, Engines, Articles, Crawler) {
     'ngInject';
 
     this.$mdToast = $mdToast;
@@ -12,8 +12,8 @@ class ChannelController {
     // danger: Passing engine, which may not have been resolved from firebase yet.
     // Here works, since the only work being done is saving the reference for later use
     this.CrawlerInstance = Crawler.createInstance(this.channel.url, this.engine);
-    this.ChannelInstance = Channel.createInstance(this.user.uid, this.channel.$id);
-    this.dynamicArticles = new DynamicArticles($log, this.ChannelInstance);
+    this.ArticlesInstance = Articles.createInstance(this.user.uid, this.channel.$id);
+    this.dynamicArticles = new DynamicArticles($log, this.ArticlesInstance);
     this._registerMarkReadOnScroll($scope);
   }
 
@@ -24,13 +24,13 @@ class ChannelController {
   }
 
   fetch() {
-    const chanInst = this.ChannelInstance;
+    const artiInst = this.ArticlesInstance;
     const da = this.dynamicArticles;
 
     // TODO(vucalur): Not liking this bind() mess. Why ES6's "filterOnlyNew = articles => {" ain't compiling ?!
     this.CrawlerInstance.fetchArticles()
-      .then(angular.bind(chanInst, chanInst.filterOnlyNew))
-      .then(angular.bind(chanInst, chanInst.addScraped))
+      .then(angular.bind(artiInst, artiInst.filterOnlyNew))
+      .then(angular.bind(artiInst, artiInst.addScraped))
       .then(angular.bind(da, da.addOnTop))
       .then(angular.bind(this, this._showFetchCompleteToast));
   }

@@ -3,9 +3,9 @@ import {pluralOrSingular} from "../utils";
 
 /**
  * Separate service instance for each channel, to avoid constant passing (uid, channelId) in call hierarchy
- * and to manage pagination cursors' states as well.
+ * and to manage states of pagination cursors.
  */
-class Channel_ScopePrototype {
+class Articles_ScopePrototype {
   constructor($log, $q, Paged, Root, uid, channelId) {
     this.$log = $log;
     this.$q = $q;
@@ -72,7 +72,7 @@ class Channel_ScopePrototype {
   }
 
   addScraped(articles) {
-    Channel_ScopePrototype._setDatetimeScraped(articles);
+    Articles_ScopePrototype._setDatetimeScraped(articles);
     return this._unreadPaged.addOmittingPagination(...articles);
   }
 
@@ -94,11 +94,11 @@ class Channel_ScopePrototype {
   }
 }
 
-export default class Channel {
+export default class Articles {
   constructor($log, $q, Paged, Root) {
     'ngInject';
     this.createInstance = (uid, channelId) =>
-      new Channel_ScopePrototype($log, $q, Paged, Root, uid, channelId);
+      new Articles_ScopePrototype($log, $q, Paged, Root, uid, channelId);
   }
 }
 

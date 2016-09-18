@@ -1,12 +1,12 @@
 // TODO(vucalur): Tests :)
 export default class DynamicArticles {
-  constructor($log, ChannelInstance) {
+  constructor($log, ArticlesInstance) {
     this.$log = $log;
     // TODO(vucalur): move to app config, DRY
     this._PAGE_SIZE = 50;
     // TODO(vucalur): better way. Static const ?
     this._FETCH_IN_PROGRESS = 1234; // marker - dummy value. Cannot be falsy though.
-    this.ChannelInstance = ChannelInstance;
+    this.ArticlesInstance = ArticlesInstance;
     this._allUnreadFetched = false;
     this._allFetched = false;
     this._fetched = [];
@@ -42,7 +42,7 @@ export default class DynamicArticles {
       this._fetchPageRead();
     } else {
       this._addFIPMarkers();
-      this.ChannelInstance.unreadNextPage().then(page => {
+      this.ArticlesInstance.unreadNextPage().then(page => {
         this._removeFIPMarkers();
         // TODO(vucalur): named arguments ES6
         this._addPage(page, false);
@@ -80,7 +80,7 @@ export default class DynamicArticles {
 
   _fetchPageRead() {
     this._addFIPMarkers();
-    this.ChannelInstance.readNextPage().then(page => {
+    this.ArticlesInstance.readNextPage().then(page => {
       this._removeFIPMarkers();
       // TODO(vucalur): named arguments ES6
       this._addPage(page, true);
@@ -109,7 +109,7 @@ export default class DynamicArticles {
     const article = this._fetched[index];
     if (article && !this._fetchInProgress(article) && !article.isRead) {
       article.isRead = true;
-      this.ChannelInstance.markAsRead(article.data);
+      this.ArticlesInstance.markAsRead(article.data);
     }
   }
 
