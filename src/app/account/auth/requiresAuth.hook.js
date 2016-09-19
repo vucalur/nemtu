@@ -5,12 +5,13 @@ export default function authHookRunBlock($transitions, AuthService) {
     to: state => state.data && state.data.requiresAuth
   };
 
-  const redirectToLogin = transition => {
-    if (!AuthService.isLoggedIn()) {
-      const $state = transition.router.stateService;
-      return $state.target('login', undefined, {location: false});
-    }
-  };
+  const redirectToLogin = transition =>
+    AuthService.isLoggedIn().then(loggedIn => {
+      if (!loggedIn) {
+        const $state = transition.router.stateService;
+        return $state.target('login', undefined, {location: false});
+      }
+    });
 
   $transitions.onBefore(requiresAuthCriteria, redirectToLogin, {priority: 10});
 }

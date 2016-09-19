@@ -4,23 +4,32 @@
  */
 // TODO(vucalur): Move "auth" folder to global ng module. Do together with general A&A overhaul
 export default class AuthService {
-  constructor($firebaseAuth) {
+  constructor($q, $firebaseAuth) {
     'ngInject';
 
+    this.$q = $q;
     this._auth = $firebaseAuth();
-    this.logout = this._auth.$signOut;
     this._watchAuthState();
   }
 
-  // TODO(vucalur): measure perf. benefit and use this._auth.getAuth() if marginal
   _watchAuthState() {
+    const authLoadedDeferred = this.$q.defer();
+    this._authLoaded = authLoadedDeferred.promise;
+
     this._auth.$onAuthStateChanged(user => {
       this._user = user;
+      authLoadedDeferred.resolve();
     });
   }
 
   isLoggedIn() {
-    return Boolean(this._user);
+    return this._authLoaded.then(() =>
+      Boolean(this._user)
+    );
+  }
+
+  isLoggedInSync() {
+    return Boolean(this.displayName);
   }
 
   get uid() {
@@ -28,15 +37,16 @@ export default class AuthService {
   }
 
   get displayName() {
-    if (!this._user) {
-      return null;
-    }
-    return this._user.displayName;
+    return this._user && this._user.displayName;
   }
 
   login(providerCode) {
     const uidPromise = this._auth.$signInWithPopup(providerCode)
       .then(authData => authData.user.uid);
     return uidPromise;
+  }
+
+  logout() {
+    this._auth.$signOut();
   }
 }

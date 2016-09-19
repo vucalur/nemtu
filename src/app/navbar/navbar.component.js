@@ -15,7 +15,7 @@ class NavbarController {
   }
 
   get isLoggedIn() {
-    return this.AuthService.isLoggedIn();
+    return this.AuthService.isLoggedInSync();
   }
 }
 
