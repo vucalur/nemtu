@@ -18,9 +18,9 @@ class LoginController {
   }
 
   login(providerCode) {
-    this.AuthService.login(providerCode).then(authData => {
-      this.$log.log("Logged in as:", authData.user.uid);
-      this.$state.go('channels');
+    this.AuthService.login(providerCode).then(uid => {
+      this.$log.log("Logged in. uid:", uid);
+      // TODO(vucalur): redirect to previous state
     }).catch(error => {
       this.$log.error("Authentication failed:", error);
     });

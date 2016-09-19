@@ -7,8 +7,7 @@ import firebase from 'angularfire';
 import ngMaterial from 'angular-material';
 import ngMdIcons from 'angular-material-icons';
 
-import {config} from './_.config';
-import {routesConfig, authRequiredRedirect} from './_.states';
+import {config, urlsConfig} from './_.config';
 import navbar from './app/navbar/navbar.component';
 
 import Paged from "./app/firebaseData/paged.service";
@@ -45,8 +44,7 @@ angular.module('nemtu', [
   ChannelsModule.name
 ])
   .config(config)
-  .config(routesConfig)
-  .run(authRequiredRedirect)
+  .config(urlsConfig)
   .component('nmtNavbar', navbar)
   .service('Paged', Paged)
   .service('Root', Root)

@@ -1,13 +1,11 @@
-import {requireAuth} from '../account/auth/routingResolvers';
-
-export function routerConfig($stateProvider) {
+export default function states($stateProvider) {
   'ngInject';
   $stateProvider
     .state({
       name: 'channels',
       url: '/',
       component: 'channels',
-      resolve: {user: requireAuth}
+      data: {requiresAuth: true}
     })
     .state({
       name: 'channels.channel',

@@ -103,7 +103,7 @@ export default class EditEngineController {
       }
     } else {
       delete pagination.type;
-        // TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?
+      // TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?
       delete pagination.linkToNext;
       delete pagination.query;
     }

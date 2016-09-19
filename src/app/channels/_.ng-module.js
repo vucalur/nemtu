@@ -3,7 +3,7 @@ import ngSanitize from 'angular-sanitize';
 import uiRouter from 'angular-ui-router';
 import ngMaterial from 'angular-material';
 
-import {routerConfig} from './_.states';
+import states from './_.states';
 import channels from './channels.component';
 import Crawler from './channel/crawler.service';
 import Parser from './channel/parser.service';
@@ -17,7 +17,7 @@ export default angular.module('nemtu.channels', [
   ngMaterial,
   uiRouter
 ])
-  .config(routerConfig)
+  .config(states)
   .config(themes)
   .service('Crawler', Crawler)
   .service('Parser', Parser)

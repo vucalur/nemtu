@@ -2,16 +2,15 @@ import angular from "angular";
 import {pluralOrSingular} from "../utils";
 
 /**
- * Separate service instance for each channel, to avoid constant passing (uid, channelId) in call hierarchy
+ * Separate service instance for each channel, to avoid constant passing channelId in call hierarchy
  * and to manage states of pagination cursors.
  */
 class Articles_ScopePrototype {
-  constructor($log, $q, Paged, Root, uid, channelId) {
+  constructor($log, $q, Paged, Root, AuthService, channelId) {
     this.$log = $log;
     this.$q = $q;
-    this.uid = uid;
     this.channelId = channelId;
-    this._ref = Root.ucArticles.child(this.uid).child(this.channelId);
+    this._ref = Root.ucArticles.child(AuthService.uid).child(this.channelId);
     this._readRef = this._ref.child('read');
     this._unreadRef = this._ref.child('unread');
     this._readPaged = Paged.createInstance(this._readRef);
@@ -95,10 +94,10 @@ class Articles_ScopePrototype {
 }
 
 export default class Articles {
-  constructor($log, $q, Paged, Root) {
+  constructor($log, $q, Paged, Root, AuthService) {
     'ngInject';
-    this.createInstance = (uid, channelId) =>
-      new Articles_ScopePrototype($log, $q, Paged, Root, uid, channelId);
+    this.createInstance = channelId =>
+      new Articles_ScopePrototype($log, $q, Paged, Root, AuthService, channelId);
   }
 }
 

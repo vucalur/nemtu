@@ -7,7 +7,7 @@ class EnginesController {
 
     this.$document = $document;
     this.$mdDialog = $mdDialog;
-    this.engines = Engines.getEngines(this.user.uid);
+    this.engines = Engines.getEngines();
   }
 
   add(ev) {
@@ -58,8 +58,5 @@ class EnginesController {
 export default {
   template: require('./engines.component.html'),
   controller: EnginesController,
-  controllerAs: 'vm',
-  bindings: {
-    user: '<'
-  }
+  controllerAs: 'vm'
 };

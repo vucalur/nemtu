@@ -4,7 +4,7 @@ import ngMaterial from 'angular-material';
 import firebase from 'angularfire';
 import ngMdIcons from 'angular-material-icons';
 
-import {routerConfig} from './_.states';
+import states from './_.states';
 import engines from './engines.component';
 
 import './style.scss';
@@ -15,6 +15,6 @@ export default angular.module('nemtu.engines', [
   firebase,
   ngMdIcons
 ])
-  .config(routerConfig)
+  .config(states)
   .component('engines', engines)
 ;

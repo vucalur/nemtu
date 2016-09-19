@@ -8,16 +8,16 @@ class ChannelController {
 
     this.$mdToast = $mdToast;
     const channelId = this.$transition$.params().channelId;
-    Channels.getChannelPromise(this.user.uid, channelId)
+    Channels.getChannelPromise(channelId)
       .then(channel => {
         this.channel = channel;
-        Engines.getEnginePromise(this.user.uid, this.channel.engine_id)
+        Engines.getEnginePromise(this.channel.engine_id)
           .then(engine => {
             this.engine = engine;
             this.CrawlerInstance = Crawler.createInstance(this.channel.url, this.engine);
           });
       });
-    this.ArticlesInstance = Articles.createInstance(this.user.uid, channelId);
+    this.ArticlesInstance = Articles.createInstance(channelId);
     this.dynamicArticles = new DynamicArticles($log, this.ArticlesInstance);
     this._registerMarkReadOnScroll($scope);
   }
@@ -86,7 +86,6 @@ export default {
   controller: ChannelController,
   controllerAs: 'vm',
   bindings: {
-    user: '<',
     $transition$: '<'
   }
 };

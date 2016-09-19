@@ -8,7 +8,7 @@ class ChannelsController {
     this.$document = $document;
     this.$mdSidenav = $mdSidenav;
     this.$mdDialog = $mdDialog;
-    this.channels = Channels.getChannels(this.user.uid);
+    this.channels = Channels.getChannels();
   }
 
   toggleList() {
@@ -34,8 +34,7 @@ class ChannelsController {
       controller: EditChannelController,
       controllerAs: 'vm',
       locals: {
-        channelToEdit,
-        uid: this.user.uid // TODO(vucalur): eliminate crazy uid passing. DI anyone ?
+        channelToEdit
       },
       template: require('./editChannel.template.html'),
       parent: angular.element(this.$document.body),
@@ -66,8 +65,5 @@ class ChannelsController {
 export default {
   template: require('./channels.component.html'),
   controller: ChannelsController,
-  controllerAs: 'vm',
-  bindings: {
-    user: '<'
-  }
+  controllerAs: 'vm'
 };

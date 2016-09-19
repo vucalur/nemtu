@@ -2,13 +2,13 @@
  * According to services naming convention, it should be named and registered to angular's DI
  * as "Auth". Making it AuthService instead, to avoid confusion with Firebase's Auth
  */
-export class AuthService {
+// TODO(vucalur): Move "auth" folder to global ng module. Do together with general A&A overhaul
+export default class AuthService {
   constructor($firebaseAuth) {
     'ngInject';
 
     this._auth = $firebaseAuth();
     this.logout = this._auth.$signOut;
-    this.requireSignIn = this._auth.$requireSignIn;
     this._watchAuthState();
   }
 
@@ -20,7 +20,11 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    return this._user;
+    return Boolean(this._user);
+  }
+
+  get uid() {
+    return this._user.uid;
   }
 
   get displayName() {
@@ -31,6 +35,8 @@ export class AuthService {
   }
 
   login(providerCode) {
-    return this._auth.$signInWithPopup(providerCode);
+    const uidPromise = this._auth.$signInWithPopup(providerCode)
+      .then(authData => authData.user.uid);
+    return uidPromise;
   }
 }
