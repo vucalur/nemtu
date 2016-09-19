@@ -3,16 +3,21 @@ import DynamicArticles from "./dynamicArticles";
 import {pluralOrSingular} from "../../utils";
 
 class ChannelController {
-  constructor($log, $scope, $mdToast, Engines, Articles, Crawler) {
+  constructor($log, $scope, $mdToast, Engines, Channels, Articles, Crawler) {
     'ngInject';
 
     this.$mdToast = $mdToast;
-    // TODO(vucalur): move loading engine to state's resolve instead
-    this.engine = Engines.getEngine(this.user.uid, this.channel.engine_id);
-    // danger: Passing engine, which may not have been resolved from firebase yet.
-    // Here works, since the only work being done is saving the reference for later use
-    this.CrawlerInstance = Crawler.createInstance(this.channel.url, this.engine);
-    this.ArticlesInstance = Articles.createInstance(this.user.uid, this.channel.$id);
+    const channelId = this.$transition$.params().channelId;
+    Channels.getChannelPromise(this.user.uid, channelId)
+      .then(channel => {
+        this.channel = channel;
+        Engines.getEnginePromise(this.user.uid, this.channel.engine_id)
+          .then(engine => {
+            this.engine = engine;
+            this.CrawlerInstance = Crawler.createInstance(this.channel.url, this.engine);
+          });
+      });
+    this.ArticlesInstance = Articles.createInstance(this.user.uid, channelId);
     this.dynamicArticles = new DynamicArticles($log, this.ArticlesInstance);
     this._registerMarkReadOnScroll($scope);
   }
@@ -81,7 +86,7 @@ export default {
   controller: ChannelController,
   controllerAs: 'vm',
   bindings: {
-    channel: '<',
-    user: '<'
+    user: '<',
+    $transition$: '<'
   }
 };

@@ -1,3 +1,4 @@
+// TODO(vucalur): DRY: Engines, Channels
 export default class Channels {
   constructor($firebaseArray, $firebaseObject, Root) {
     'ngInject';
@@ -10,14 +11,15 @@ export default class Channels {
 
   getChannels(uid) {
     if (!this.channels) {
-      const ref = this.Root.uChannels.child(uid);
-      this.channels = this.$firebaseArray(ref);
+      const channelsRef = this.Root.uChannels.child(uid);
+      this.channels = this.$firebaseArray(channelsRef);
     }
     return this.channels;
   }
 
-  getChannel(uid, channelId) {
+  getChannelPromise(uid, channelId) {
     const ref = this.Root.uChannels.child(uid).child(channelId);
-    return this.$firebaseObject(ref);
+    const firebaseObj = this.$firebaseObject(ref);
+    return firebaseObj.$loaded();
   }
 }

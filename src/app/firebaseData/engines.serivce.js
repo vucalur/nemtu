@@ -1,3 +1,4 @@
+// TODO(vucalur): DRY: Engines, Channels
 export default class Engines {
   constructor($firebaseArray, $firebaseObject, Root) {
     'ngInject';
@@ -16,8 +17,9 @@ export default class Engines {
     return this.engines;
   }
 
-  getEngine(uid, engineId) {
+  getEnginePromise(uid, engineId) {
     const ref = this.Root.uEngines.child(uid).child(engineId);
-    return this.$firebaseObject(ref);
+    const firebaseObj = this.$firebaseObject(ref);
+    return firebaseObj.$loaded();
   }
 }
