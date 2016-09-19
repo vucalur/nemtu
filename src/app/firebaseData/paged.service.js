@@ -7,38 +7,53 @@ class Paged_ScopePrototype {
     this._ref = ref;
     this._refOrdr = ref.orderByKey();
     this._allProcessed = false;
-    this._setSentinel();
+    this._initComplete = this._init();
+  }
+
+  _init() {
+    // http://stackoverflow.com/questions/39560811/how-to-check-efficiently-if-collection-is-empty
+
+    const initComplete = this._refOrdr.limitToLast(1).once('value')
+      .then(collectionSnap => {
+        this._setEmptyOnInit(collectionSnap);
+        if (!this._emptyOnInit) {
+          this._setSentinel(collectionSnap);
+        }
+      });
+    return initComplete;
+  }
+
+  _setEmptyOnInit(collectionSnap) {
+    this._emptyOnInit = collectionSnap.numChildren() === 0;
   }
 
   /**
-   * Save sentinel on init, so that freshly added items won't affect pagination, won't be included in results
+   * Save sentinel on init, so that freshly added items won't affect pagination and won't be included in results
+   * @param collectionSnap Has to be limited to the last child only by `orderToLast(1)`
    */
-  _setSentinel() {
-    this._emptyOnInit = true;
-    // FIXME(vucalur): wait for the promise to resolve - cursor may be null if getNextPage() invoked right after init
-    // FIXME(vucalur): …and Firebase does not process queries in the order of submission
-    const ref = this._refOrdr.limitToLast(1);
-    ref.once('child_added').then(snap => {
-      this._emptyOnInit = false;
-      this._cursor = snap.key;
+  _setSentinel(collectionSnap) {
+    collectionSnap.forEach(item => {
+      this._cursor = item.key;
     });
   }
 
   /**
-   * new items added with this method won't affect pagination, won't be included in results - see _setSentinel()
+   * New items added with this method won't affect pagination, won't be included in results - see _setSentinel()
    */
   addOmittingPagination(...items) {
-    const waitFor = [];
+    return this._initComplete.then(() => {
+      const waitFor = [];
 
-    const result = items.map(item => {
-      Paged_ScopePrototype._stripKey(item);
-      const newRefAndPromise = this._ref.push(item);
-      waitFor.push(newRefAndPromise); // as a promise
-      return Paged_ScopePrototype._itemWithKey1(item, newRefAndPromise.key);  // as a ref
+      const result = items.map(item => {
+        Paged_ScopePrototype._stripKey(item);
+        const newRefAndPromise = this._ref.push(item);
+        waitFor.push(newRefAndPromise); // as a promise
+        return Paged_ScopePrototype._itemWithKey1(item, newRefAndPromise.key);  // as a ref
+      });
+
+      return this.$q.all(waitFor)
+        .then(() => result);
     });
-
-    return this.$q.all(waitFor)
-      .then(() => result);
   }
 
   // method overload
@@ -58,25 +73,35 @@ class Paged_ScopePrototype {
   }
 
   getNextPage() {
-    if (this._allProcessed || this._emptyOnInit) {
-      return this._resolveWithEmptyPage();
-    }
-    let ref = this._refOrdr;
-    if (this._cursor) {
-      ref = ref.endAt(this._cursor);
-    }
-    ref = ref.limitToLast(this._PAGE_SIZE_PLUS_CURSOR);
+    return this._initComplete.then(() => {
+      if (this._allProcessed || this._emptyOnInit) {
+        return this._emptyPage();
+      }
+      let ref = this._refOrdr;
+      ref = ref.endAt(this._cursor);  // undefined _cursor already handled by _emptyOnInit check above
+      ref = ref.limitToLast(this._PAGE_SIZE_PLUS_CURSOR);
 
-    return ref.once('value')
-      .then(snap => {
-        const page = [];
-        snap.forEach(child => {
-          page.push(Paged_ScopePrototype._itemWithKey2(child));
+      return ref.once('value')
+        .then(collectionSnap => {
+          const page = [];
+          collectionSnap.forEach(item => {
+            page.push(Paged_ScopePrototype._itemWithKey2(item));
+          });
+          page.reverse();  // apply from latest to oldest order
+          this._handleCursor(page);
+          return page;
         });
-        page.reverse();  // apply from latest to oldest order
-        this._handleCursor(page);
-        return page;
-      });
+    });
+    // using ng's built-in promise unwrapping here:
+    //    …
+    //    return sth.then(() => page);
+    // }).then(page => {
+    //    …
+    // }
+  }
+
+  _emptyPage() {
+    return [];
   }
 
   _handleCursor(page) {
@@ -103,10 +128,6 @@ class Paged_ScopePrototype {
 
   static _removeCursor(page) {
     page.pop();
-  }
-
-  _resolveWithEmptyPage() {
-    return this.$q.when([]);
   }
 }
 
