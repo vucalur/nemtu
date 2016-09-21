@@ -18,12 +18,11 @@ class LoginController {
   }
 
   login(providerCode) {
-    this.AuthService.login(providerCode).then(uid => {
-      this.$log.log("Logged in. uid:", uid);
+    this.AuthService.login(providerCode)
+      .then(() => this.$log.log("Logged in. uid:", this.AuthService.uid))
       // TODO(vucalur): redirect to previous state
-    }).catch(error => {
-      this.$log.error("Authentication failed:", error);
-    });
+      // TODO(vucalur): show error in UI
+      .catch(error => this.$log.error("Authentication failed:", error));
   }
 }
 
