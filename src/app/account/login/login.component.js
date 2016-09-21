@@ -18,9 +18,16 @@ class LoginController {
   }
 
   login(providerCode) {
+    const returnToOriginalState = () => {
+      const state = this.returnTo.state();
+      const params = this.returnTo.params();
+      const options = Object.assign({}, this.returnTo.options(), {reload: true});
+      this.$state.go(state, params, options);
+    };
+
     this.AuthService.login(providerCode)
       .then(() => this.$log.log("Logged in. uid:", this.AuthService.uid))
-      // TODO(vucalur): redirect to previous state
+      .then(returnToOriginalState)
       // TODO(vucalur): show error in UI
       .catch(error => this.$log.error("Authentication failed:", error));
   }
@@ -29,5 +36,6 @@ class LoginController {
 export default {
   template: require('./login.component.html'),
   controller: LoginController,
-  controllerAs: 'vm'
+  controllerAs: 'vm',
+  bindings: {returnTo: '<'}
 };
