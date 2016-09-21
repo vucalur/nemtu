@@ -26,7 +26,6 @@ class LoginController {
     };
 
     this.AuthService.login(providerCode)
-      .then(() => this.$log.log("Logged in. uid:", this.AuthService.uid))
       .then(returnToOriginalState)
       // TODO(vucalur): show error in UI
       .catch(error => this.$log.error("Authentication failed:", error));

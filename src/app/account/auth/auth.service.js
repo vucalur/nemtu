@@ -4,13 +4,14 @@
  */
 // TODO(vucalur): Move "auth" folder to global ng module. Do together with general A&A overhaul
 export default class AuthService {
-  constructor($q, $firebaseAuth) {
+  constructor($q, $log, $firebaseAuth) {
     'ngInject';
 
     this.$q = $q;
+    this.$log = $log;
     this._auth = $firebaseAuth();
 
-    // Firebase Auth needs some time from calling $firebaseAuth() to initial $onAuthStateChanged()'s callback invocation.
+    // Firebase Auth needs some time from calling $firebaseAuth() to initial $onAuthStateChanged()'s listener invocation.
     // In order to prevent isLoggedIn() from returning invalid state while this time elapses:
     this._setAuthLoading();
 
@@ -19,10 +20,8 @@ export default class AuthService {
 
   _watchLoginState() {
     this._auth.$onAuthStateChanged(user => {
-      // If the auth status changes (i.e. login() or logout() is invoked) following code is performed twice:
-      // first time by one of the mentioned methods, second time here.
-      // It's still necessary to set auth state during application bootstrap.
       this._user = user;
+      this.$log.log(`Auth state changed. Current uid: ${this.uid}`);
       this._setAuthReady();
     });
   }
@@ -54,22 +53,17 @@ export default class AuthService {
     // invalidate _authReady:
     this._setAuthLoading();
 
-    return this._auth.$signInWithPopup(providerCode)
-      .then(authData => {
-        this._user = authData.user;
-        this._setAuthReady();
-      });
+    // _setAuthReady() along with setting _user will be done by $onAuthStateChanged's listener.
+    // So, it doesn't have to be done in then() of below promise:
+    return this._auth.$signInWithPopup(providerCode);
   }
 
   logout() {
     // same reason as for login():
     this._setAuthLoading();
 
-    this._auth.$signOut()
-      .then(() => {
-        this._user = null;
-        this._setAuthReady();
-      });
+    // same explanation as for login()
+    this._auth.$signOut();
   }
 
   _setAuthLoading() {
