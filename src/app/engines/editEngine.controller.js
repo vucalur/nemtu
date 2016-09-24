@@ -33,8 +33,8 @@ export default class EditEngineController {
       article: {
         customFields: [
           // TODO(vucalur): Magic number. ES6 Enums? inshttp://exploringjs.com/es6/ch_symbols.html ?
-          {label: 'price', type: 'text', selector: '<<price_sel>>'},
-          {label: 'description', type: 'html', selector: '<<desc_sel>>'}
+          {label: 'price', type: 'text', selector: '<<price_sel>>', ignoreChanges: false},
+          {label: 'description', type: 'html', selector: '<<desc_sel>>', ignoreChanges: true}
         ]
       },
       pagination: {
