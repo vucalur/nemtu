@@ -104,33 +104,34 @@
                 Crawler will stop when next returned page doesn't contain any articles.
               </span>
             </md-radio-button>
+            <div layout-gt-sm="row" ng-show="vm.engine.pagination.type == 'query' ">
+              <md-input-container class="md-block">
+                <label>url query param</label>
+                <input ng-model="vm.engine.pagination.query.param">
+              </md-input-container>
+              <md-input-container class="md-block">
+                <label>start value</label>
+                <input type="number" ng-model="vm.engine.pagination.query.start">
+              </md-input-container>
+              <md-input-container class="md-block">
+                <label>increment</label>
+                <input type="number" ng-model="vm.engine.pagination.query.inc">
+              </md-input-container>
+            </div>
+
             <md-radio-button value="linkToNext">pagination by link to next page<br/>
               <span class="desc">
                 Crawler will stop when next returned page doesn't contain such link<br/>
                 or extracted string is not a valid URL of either http or https protocol.
               </span>
             </md-radio-button>
+            <div ng-show="vm.engine.pagination.type == 'linkToNext' ">
+              <md-input-container class="md-block">
+                <label>next page link selector</label>
+                <input ng-model="vm.engine.pagination.linkToNext.sel">
+              </md-input-container>
+            </div>
           </md-radio-group>
-          <div layout-gt-sm="row" ng-show="vm.engine.pagination.type == 'query' ">
-            <md-input-container class="md-block">
-              <label>url query param</label>
-              <input ng-model="vm.engine.pagination.query.param">
-            </md-input-container>
-            <md-input-container class="md-block">
-              <label>start value</label>
-              <input type="number" ng-model="vm.engine.pagination.query.start">
-            </md-input-container>
-            <md-input-container class="md-block">
-              <label>increment</label>
-              <input type="number" ng-model="vm.engine.pagination.query.inc">
-            </md-input-container>
-          </div>
-          <div ng-show="vm.engine.pagination.type == 'linkToNext' ">
-            <md-input-container class="md-block">
-              <label>next page link selector</label>
-              <input ng-model="vm.engine.pagination.linkToNext.sel">
-            </md-input-container>
-          </div>
         </fieldset>
       </div>
     </md-dialog-content>
